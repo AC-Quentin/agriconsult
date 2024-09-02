@@ -1,0 +1,97 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  security-checker:
+    name: Security Checker
+    runs-on: ubuntu-latest
+    container:
+      image: jakzal/phpqa:php8.2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: Security Checker
+        run: local-php-security-checker composer.lock
+
+  php-code-standard:
+    name: PHP Code Standard
+    runs-on: ubuntu-latest
+    container:
+      image: jakzal/phpqa:php8.2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: PHP CS Fixer
+        run: php-cs-fixer fix ./src --dry-run --rules=@Symfony --verbose
+
+      - name: PHPStan Analyse
+        run: phpstan analyse ./src -l3
+
+      - name: PHP Documenter
+        run: phpdd ./src
+
+      - name: PHP Copy/Paste Detector
+        run: phpcpd ./src --exclude './src/Controller/Admin/' --exclude './src/Entity'
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    container:
+      image: jakzal/phpqa:php8.2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: Make console executable
+        run: chmod +x ./bin/console
+
+      - name: Lint Twig
+        run: ./bin/console lint:twig templates --env=prod
+
+      - name: Lint YAML
+        run: ./bin/console lint:yaml config --parse-tags
+
+      - name: Doctrine Schema Validate
+        run: ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
