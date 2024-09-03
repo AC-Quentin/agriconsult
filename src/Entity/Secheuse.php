@@ -240,4 +240,9 @@ class Secheuse
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->id;
+    }
 }
