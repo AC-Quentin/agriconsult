@@ -12,11 +12,13 @@ use App\Entity\BiblioTremie;
 use App\Entity\BiblioVisMobile;
 use App\Entity\Client;
 use App\Entity\DemandeCommerciale;
+use App\Entity\Invitation;
 use App\Entity\Manutention;
 use App\Entity\Nettoyeur;
 use App\Entity\Secheuse;
 use App\Entity\Sechoir;
 use App\Entity\Stockage;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -63,6 +65,10 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Module', 'fas fa-list', BiblioModule::class),
             MenuItem::linkToCrud('Biomasse', 'fas fa-list', BiblioBiomasse::class),
             MenuItem::linkToCrud('Vis Mobile', 'fas fa-list', BiblioVisMobile::class),
+
+            MenuItem::section('Utilisateurs'),
+            MenuItem::linkToCrud('Invitation', 'fas fa-envelope', Invitation::class),
+            MenuItem::linkToCrud('User', 'fas fa-user', User::class),
         ];
     }
 }
