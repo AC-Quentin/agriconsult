@@ -24,7 +24,6 @@ class InvitationController extends AbstractController
     #[Route('/invitation/{uuid}', name: 'app_invitation')]
     public function index(#[MapEntity(mapping: ['uuid' => 'uuid'])] Invitation $invitation, Request $request): Response
     {
-
         if (null != $invitation->getMember()) {
             throw new \Exception('This invitation has already been used.');
         }
@@ -53,11 +52,8 @@ class InvitationController extends AbstractController
             return $this->redirectToRoute('admin');
         }
 
-
-        
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
-
     }
 }
