@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Secheuse Form{% endblock %}
+
+{% block body %}
+    {{ form_errors(secheuseForm) }}
+
+    {{ form_start(secheuseForm) }}
+
+    <div class="row justify-content-sm-center h-100">
+        <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+            <div class="text-center my-5">
+                <a href="{{ path('app_home_page') }}" class="nav-link">
+                    <img src="imgs/Logo.png" alt="logo" width="200">
+                </a>
+            </div>
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h1 class="fs-4 card-title fw-bold mb-4">Secheuse Form</h1>
+                    
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.TYPE_SECHEUSE, 'Type Secheuse', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.TYPE_SECHEUSE, {'attr': {'class': 'form-control', 'required': '', 'autofocus': ''}}) }}
+                        {{ form_errors(secheuseForm.TYPE_SECHEUSE) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.TYPE_PLANCHER, 'Type Plancher', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.TYPE_PLANCHER, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.TYPE_PLANCHER) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.TYPE_REPRISE, 'Type Reprise', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.TYPE_REPRISE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.TYPE_REPRISE) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.DEBIT_REPRISE, 'Debit Reprise', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.DEBIT_REPRISE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.DEBIT_REPRISE) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.TYPE_MODULE, 'Type Module', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.TYPE_MODULE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.TYPE_MODULE) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.GAZ, 'Gaz', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.GAZ, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.GAZ) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.BIOMASSE, 'Type Biomasse', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.BIOMASSE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.BIOMASSE) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.VIS_BRASSAGE, 'Vis Brassage', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.VIS_BRASSAGE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.VIS_BRASSAGE) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.QUANTITE, 'Quantite', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.QUANTITE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.QUANTITE) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.PRENETTOYEUR, 'Prenettoyeur', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.PRENETTOYEUR, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.PRENETTOYEUR) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.B2D, 'B2D', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.B2D, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.B2D) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.DEBIT_VIS, 'Debit Vis', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.DEBIT_VIS, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.DEBIT_VIS) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(secheuseForm.VIS_MOBILE, 'Vis Mobile', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(secheuseForm.VIS_MOBILE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(secheuseForm.VIS_MOBILE) }}
+                    </div>
+
+                    <div class="align-items-center d-flex">
+                        <button type="submit" class="btn btn-primary ms-auto">Submit</button>
+                    </div>
+                </div>
+                <div class="card-footer py-3 border-0">
+                    <div class="text-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(secheuseForm) }}
+{% endblock %}
