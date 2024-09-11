@@ -80,6 +80,4 @@ class Roles
     {
         return $this->role;
     }
-
-    
 }
