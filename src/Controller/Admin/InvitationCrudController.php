@@ -19,6 +19,8 @@ class InvitationCrudController extends AbstractCrudController
     {
         return [
             EmailField::new('email'),
+            AssociationField::new('role')
+                ->setCrudController(RolesCrudController::class),
             TextField::new('uuid')
                 ->hideWhenCreating(),
             AssociationField::new('member')
