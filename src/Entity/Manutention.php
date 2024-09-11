@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ManutentionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ManutentionRepository::class)]
@@ -56,6 +57,9 @@ class Manutention
      */
     #[ORM\OneToMany(targetEntity: DemandeCommerciale::class, mappedBy: 'manutention')]
     private Collection $demandeCommerciales;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $commentaire = null;
 
     public function __construct()
     {
@@ -244,5 +248,17 @@ class Manutention
     public function __toString(): string
     {
         return (string) $this->id;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(?string $commentaire): static
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
     }
 }

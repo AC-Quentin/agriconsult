@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DemandeCommercialeRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DemandeCommercialeRepository::class)]
@@ -36,6 +37,9 @@ class DemandeCommerciale
 
     #[ORM\ManyToOne(inversedBy: 'demandeCommerciales')]
     private ?Client $client = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $commentaire = null;
 
     public function getId(): ?int
     {
@@ -134,6 +138,18 @@ class DemandeCommerciale
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(?string $commentaire): static
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }

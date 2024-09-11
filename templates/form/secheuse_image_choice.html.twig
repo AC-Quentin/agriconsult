@@ -1,0 +1,14 @@
+{# templates/form/secheuse_image_choice.html.twig #}
+{% block choice_widget_expanded %}
+    <div class="row align-items-end image-choice-container">
+        {% for child in form %}
+            <div class="col image-choice">
+                {{ form_widget(child, {'attr': {'class': 'form-check-input', 'id': 'choice_' ~ child.vars.id}}) }}
+                
+                <label class="form-check-label" for="choice_{{ child.vars.id }}">
+                    <img src="{{ asset('imgs/secheuse/' ~ child.vars.label ~ '.jpg') }}" alt="{{ child.vars.value }}" data-radio-id="{{ child.vars.id }}">
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

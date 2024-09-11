@@ -1,0 +1,27 @@
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-2">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            
+            <img src="imgs/Logo.png" alt="logo" width="150">
+        
+        </a>
+
+        <ul class="nav nav-pills">
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COMMERCIALE') %}
+                <!--<li class="nav-item">
+                    <a href="{#{{ path('app_DC') }}#}" class="nav-link">Demande Commerciale</a>
+                </li>-->
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a href="{{ path('admin') }}" class="nav-link">Admin</a>
+                </li>
+            {% endif %}
+            <li class="nav-item"><a href="{{ path('app_profile') }}" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Logout ({{ app.user.userIdentifier }})</a></li>
+        </ul>
+        </header>
+        
+    </div>
+
+    <div class="b-example-divider"></div>

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SecheuseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SecheuseRepository::class)]
@@ -56,6 +57,12 @@ class Secheuse
      */
     #[ORM\OneToMany(targetEntity: DemandeCommerciale::class, mappedBy: 'secheuse')]
     private Collection $demandeCommerciales;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $commentaire = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $debit_vis = null;
 
     public function __construct()
     {
@@ -244,5 +251,29 @@ class Secheuse
     public function __toString(): string
     {
         return (string) $this->id;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(?string $commentaire): static
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getDebitVis(): ?string
+    {
+        return $this->debit_vis;
+    }
+
+    public function setDebitVis(?string $debit_vis): static
+    {
+        $this->debit_vis = $debit_vis;
+
+        return $this;
     }
 }
