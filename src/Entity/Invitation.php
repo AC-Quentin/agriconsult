@@ -23,6 +23,9 @@ class Invitation
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $member = null;
 
+    #[ORM\ManyToOne(inversedBy: 'invitations')]
+    private ?Roles $role = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Invitation
     public function setMember(?User $member): static
     {
         $this->member = $member;
+
+        return $this;
+    }
+
+    public function getRole(): ?Roles
+    {
+        return $this->role;
+    }
+
+    public function setRole(?Roles $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }

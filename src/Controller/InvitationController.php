@@ -30,6 +30,7 @@ class InvitationController extends AbstractController
 
         $user = new User();
         $user->setEmail($invitation->getEmail());
+        $user->setRoles([$invitation->getRole()->getRole()]);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
