@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DemandeCommerciale;
 use App\Entity\Secheuse;
+use App\Entity\Client;
 use App\Form\DemandeCommercialeFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,11 +16,20 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DemandeCommercialeController extends AbstractController
 {
-    #[Route('/demande-commerciale', name: 'app_demande_commerciale')]
-    public function index(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator): Response
+    #[Route('/demande-commerciale/secheuse', name: 'app_demande_commerciale_secheuse')]
+    public function secheuse(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator): Response
     {
+        $type_demande = 'secheuse';
         $demandeCommerciale = new DemandeCommerciale();
-        $form = $this->createForm(DemandeCommercialeFormType::class, $demandeCommerciale);
+
+        // Ajout de la date de la demande
+        $demandeCommerciale->setDate(new \DateTimeImmutable());
+        // Ajout du type de demande
+        $demandeCommerciale->setTypeDemande($type_demande);
+
+        $form = $this->createForm(DemandeCommercialeFormType::class, $demandeCommerciale, [
+            'type_demande' => $type_demande,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -28,19 +38,19 @@ class DemandeCommercialeController extends AbstractController
             if ($secheuseData) {
                 // Critères de comparaison pour Secheuse
                 $criteria = [
-                    'TYPE_SECHEUSE' => $secheuseData->getTypeSecheuse(),
-                    'TYPE_PLANCHER' => $secheuseData->getTypePlancher(),
-                    'TYPE_REPRISE' => $secheuseData->getTypeReprise(),
-                    'DEBIT_REPRISE' => $secheuseData->getDebitReprise(),
-                    'TYPE_MODULE' => $secheuseData->getTypeModule(),
-                    'GAZ' => $secheuseData->getGaz(),
-                    'TYPE_BIOMASSE' => $secheuseData->getTypeBiomasse(),
-                    'VIS_BRASSAGE' => $secheuseData->getVisBrassage(),
-                    'QUANTITE' => $secheuseData->getQuantite(),
-                    'PRENETTOYEUR' => $secheuseData->getPrenettoyeur(),
-                    'B2D' => $secheuseData->getB2D(),
-                    'DEBIT_VIS' => $secheuseData->getDebitVis(),
-                    'VIS_MOBILE' => $secheuseData->getVisMobile(),
+                    'type_secheuse' => $secheuseData->getTypeSecheuse(),
+                    'type_plancher' => $secheuseData->getTypePlancher(),
+                    'type_reprise' => $secheuseData->getTypeReprise(),
+                    'debit_reprise' => $secheuseData->getDebitReprise(),
+                    'type_module' => $secheuseData->getTypeModule(),
+                    'gaz' => $secheuseData->getGaz(),
+                    'biomasse' => $secheuseData->getBiomasse(),
+                    'vis_brassage' => $secheuseData->getVisBrassage(),
+                    'quantite' => $secheuseData->getQuantite(),
+                    'prenettoyeur' => $secheuseData->getPrenettoyeur(),
+                    'b2d' => $secheuseData->getB2D(),
+                    'debit_vis' => $secheuseData->getDebitVis(),
+                    'vis_mobile' => $secheuseData->getVisMobile(),
                 ];
 
                 // Cherche une Secheuse existante correspondant aux critères
@@ -75,6 +85,21 @@ class DemandeCommercialeController extends AbstractController
                 }
             }
 
+            $clientData = $form->get('client')->getData();
+            $client = $entityManager->getRepository(Client::class)->findOneBy(['id_client' => $clientData->getIdClient()]);
+    
+            if (!$client) {
+                // Si le client n'existe pas, créer un nouveau client
+                $client = new Client();
+                $client->setIdClient($clientData->getIdClient());
+                $client->setRaisonSociale($clientData->getRaisonSociale());
+                // Définir d'autres propriétés du client si nécessaire
+                $entityManager->persist($client);
+            }
+    
+            // Associe le client à la demande commerciale
+            $demandeCommerciale->setClient($client);
+
             $entityManager->persist($demandeCommerciale);
             $entityManager->flush();
 
@@ -88,6 +113,29 @@ class DemandeCommercialeController extends AbstractController
 
         return $this->render('demande_commerciale/index.html.twig', [
             'demandeCommercialeForm' => $form->createView(),
+            'type_demande' => $type_demande,
+        ]);
+    }
+
+    #[Route('/demande-commerciale/stockage', name: 'app_demande_commerciale_stockage')]
+    public function stockage(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator): Response
+    {
+        $type_demande = 'stockage';
+        $demandeCommerciale = new DemandeCommerciale();
+
+        // Ajout de la date de la demande
+        $demandeCommerciale->setDate(new \DateTimeImmutable());
+        // Ajout du type de demande
+        $demandeCommerciale->setTypeDemande($type_demande);
+
+        $form = $this->createForm(DemandeCommercialeFormType::class, $demandeCommerciale, [
+            'type_demande' => $type_demande,
+        ]);
+        $form->handleRequest($request);
+
+        return $this->render('demande_commerciale/index.html.twig', [
+            'demandeCommercialeForm' => $form->createView(),
+            'type_demande' => $type_demande,
         ]);
     }
 }

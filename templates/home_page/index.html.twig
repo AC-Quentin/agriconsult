@@ -6,7 +6,7 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3 ps-0">
         {{ include('sidebar.html.twig') }}
       </div>
       <div class="col-md-8">
@@ -20,6 +20,7 @@
     <div class="container h-100">
       <div class="row align-middle">
         <div class="col-md-6 col-lg-4 column">
+        <a href="{{ path ('app_demande_commerciale_stockage') }}" class="nav-link">
           <div class="card gr-1">
             <div class="txt">
               <h1>NOUVEAU -</br>
@@ -30,10 +31,11 @@
             <i><img src="imgs/stockage.png" alt="logo" height="200"></i>
           </div>
           </div>
+        </a>
         </div>
 
         <div class="col-md-6 col-lg-4 column">
-          <a href="{{ path ('app_demande_commerciale') }}" class="nav-link">
+          <a href="{{ path ('app_demande_commerciale_secheuse') }}" class="nav-link">
             <div class="card gr-2">
               <div class="txt">
                 <h1>NOUVELLE -</br>
@@ -51,8 +53,8 @@
           <div class="card gr-3">
             <div class="txt">
               <h1>NOUVEL ENSEMBLE - </br>
-    SECHEUSE / STOCKAGE</h1>
-              <p>Ensemble Sécheuse et une ou plusieurs cellules de stockage</p>
+    PERSONNALISÉ</h1>
+              <p>Ensemble à personnalisé stockage, séchage, manutention, ...</p>
             </div>
           <div class="ico-card">
             <i><img src="imgs/silo.png" alt="logo" height="200"></i>

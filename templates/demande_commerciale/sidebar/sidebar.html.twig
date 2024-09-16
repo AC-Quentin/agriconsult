@@ -1,0 +1,81 @@
+<main class="d-flex flex-nowrap">
+
+  <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;">
+    <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+      <li class="nav-item">
+        <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Client" data-bs-original-title="Client">
+          <a class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="modal" data-bs-target="#ModalClient" data-bs-whatever="@mdo" data-bs-placement="right" aria-label="Client" data-bs-original-title="Client">
+            <img src="{{ asset('imgs/picto-client.svg') }}" alt="Icon" width="35" height="35">
+          </a>
+        </span>
+      </li>
+
+      {% if type_demande in ['stockage', 'personalise'] %}
+
+      <li>
+        <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Stockage" data-bs-original-title="Stockage">
+          <a href="#" class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="modal" data-bs-target="#ModalStockage" data-bs-placement="right" aria-label="Stockage" data-bs-original-title="Stockage">
+            <img src="{{ asset('imgs/picto-stockage.svg') }}" alt="Icon" width="35" height="35">
+          </a>
+        </span>
+      </li>
+
+      {% endif %}
+
+      {% if type_demande in ['secheuse', 'personalise'] %}
+        <li>
+          <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Secheuse" data-bs-original-title="Sécheuse">
+            <a href="#" class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="modal" data-bs-target="#ModalSecheuse" data-bs-placement="right" aria-label="Sécheuse" data-bs-original-title="Sécheuse">
+              <img src="{{ asset('imgs/picto-sechage.svg') }}" alt="Icon" width="35" height="35">
+            </a>
+          </span>
+        </li> 
+        <li>
+            <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Options" data-bs-original-title="Options Sécheuse">
+              <a href="#" class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="modal" data-bs-target="#ModalOptions" data-bs-placement="right" aria-label="Sécheuse" data-bs-original-title="Sécheuse">
+                <img src="{{ asset('imgs/picto-options.svg') }}" alt="Icon" width="35" height="35">
+            </a>
+          </span>
+        </li>
+        <li>
+            <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Vis Mobile" data-bs-original-title="Vis Mobile">
+              <a href="#" class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="modal" data-bs-target="#ModalVisMobile" data-bs-placement="right" aria-label="Vis Mobile" data-bs-original-title="Vis Mobile">
+                <img src="{{ asset('imgs/Vis Mobile.png') }}" alt="Icon" width="35" height="35">
+            </a>
+          </span>
+        </li>
+
+      {% endif %}
+
+
+    {% if type_demande in ['Manutention', 'personalise'] %}
+      <li>
+        <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Manutention" data-bs-original-title="Manutention">
+          <a href="#" class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="modal" data-bs-target="#ModalManutention" data-bs-placement="right" aria-label="Manutention" data-bs-original-title="Manutention">
+            <img src="{{ asset('imgs/picto-manutention.svg') }}" alt="Icon" width="35" height="35">
+          </a>
+        </span>
+      </li>
+    {% endif %}
+
+    {% if type_demande in ['nettoyage', 'personalise'] %}
+      <li>
+        <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Nettoyage" data-bs-original-title="Nettoyage">
+          <a href="#" class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="modal" data-bs-target="#ModalNettoyage" data-bs-placement="right" aria-label="Nettoyage" data-bs-original-title="Nettoyage">
+            <img src="{{ asset('imgs/picto-nettoyage.svg') }}" alt="Icon" width="35" height="35">
+          </a>
+        </span>
+      </li>
+    {% endif %}
+
+
+
+    </ul>
+  </div>
+
+</main>
+
+
+
+
+

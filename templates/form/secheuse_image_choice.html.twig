@@ -5,8 +5,10 @@
             <div class="col image-choice">
                 {{ form_widget(child, {'attr': {'class': 'form-check-input', 'id': 'choice_' ~ child.vars.id}}) }}
                 
-                <label class="form-check-label" for="choice_{{ child.vars.id }}">
+                <label class="form-check-label" for="{{ child.vars.id }}">
+                <span data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Secheuse" data-bs-original-title="{{child.vars.label}}">
                     <img src="{{ asset('imgs/secheuse/' ~ child.vars.label ~ '.jpg') }}" alt="{{ child.vars.value }}" data-radio-id="{{ child.vars.id }}">
+                </span>
                 </label>
             </div>
         {% endfor %}

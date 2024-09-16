@@ -2,6 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     connect() {
+
         const container = document.querySelector('.card-body'); // Sélectionner le conteneur principal
         const imgContainers = document.querySelectorAll('.image-choice-container'); // Sélectionner tous les conteneurs d'images
         const fields = Array.from(container.querySelectorAll('.mb-3.hidden')); // Sélectionner les divs avec les classes .mb-3.hidden

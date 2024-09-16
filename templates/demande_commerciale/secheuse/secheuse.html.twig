@@ -1,0 +1,94 @@
+<h2 class="fs-5 card-title fw-bold mb-4">Secheuse Details</h2>
+    
+                    <div class="mb-3">
+                        {{ form_label(demandeCommercialeForm.secheuse.QUANTITE, 'Quantité', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        {{ form_widget(demandeCommercialeForm.secheuse.QUANTITE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(demandeCommercialeForm.secheuse.QUANTITE) }}
+                    </div>
+
+                    <div class="mb-3 hidden">
+                        {{ form_label(demandeCommercialeForm.secheuse.TYPE_SECHEUSE, 'Type Secheuse', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        <div class="divider"></div>
+                        {{ form_widget(demandeCommercialeForm.secheuse.TYPE_SECHEUSE, {'widget': 'choice', 'block_prefix': 'secheuse_image_choice'}) }}
+                        {{ form_errors(demandeCommercialeForm.secheuse.TYPE_SECHEUSE) }}
+                    </div>
+
+                    <div class="mb-3 hidden">
+                        {{ form_label(demandeCommercialeForm.secheuse.TYPE_PLANCHER, 'Type Plancher', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        <div class="divider"></div>
+                        {{ form_widget(demandeCommercialeForm.secheuse.TYPE_PLANCHER, {'widget': 'choice', 'block_prefix': 'secheuse_image_choice'}) }}
+                        {{ form_errors(demandeCommercialeForm.secheuse.TYPE_PLANCHER) }}
+                    </div>
+
+                    <div class="mb-3 hidden">
+                        {{ form_label(demandeCommercialeForm.secheuse.TYPE_REPRISE, 'Type Reprise', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        <div class="divider"></div>
+                        {{ form_widget(demandeCommercialeForm.secheuse.TYPE_REPRISE, {'widget': 'choice', 'block_prefix': 'secheuse_image_choice'}) }}
+                        {{ form_errors(demandeCommercialeForm.secheuse.TYPE_REPRISE) }}
+                    </div>
+
+                    <div class="mb-3 hidden">
+                        {{ form_label(demandeCommercialeForm.secheuse.DEBIT_REPRISE, 'Débit Reprise', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        <div class="divider"></div>
+                        {{ form_widget(demandeCommercialeForm.secheuse.DEBIT_REPRISE, {'widget': 'choice', 'block_prefix': 'secheuse_image_choice'}) }}
+                        {{ form_errors(demandeCommercialeForm.secheuse.DEBIT_REPRISE) }}
+                    </div>
+
+                    <div class="container">
+                        <div class="mb-3 hidden">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <div id="module" data-variable="false">
+                                        <div class="row justify-content-sm-center h-100 mt-4 m-2">
+                                            <div class="col column">
+                                                <div class="card gr-1" id="TXT_MODULE">
+                                                    <div class="txt">
+                                                        <h1>Module</h1>
+                                                    </div>         
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div id="biomasse" data-variable="false">
+                                        <div class="row justify-content-sm-center h-100 mt-4 m-2">
+                                            <div class="col column">
+                                                <div class="card gr-2"  id="TXT_BIOMASSE">
+                                                    <div class="txt">
+                                                        <h1>Biomasse</h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Les sections qui doivent être affichées dynamiquement -->
+                    <div id="moduleSection" class="mb-3" style="display: none;">
+                        {{ form_label(demandeCommercialeForm.secheuse.TYPE_MODULE, 'Type Module', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        <div class="divider"></div>
+                        {{ form_widget(demandeCommercialeForm.secheuse.TYPE_MODULE, {'widget': 'choice', 'block_prefix': 'secheuse_image_choice'}) }}
+                        {{ form_errors(demandeCommercialeForm.secheuse.TYPE_MODULE) }}
+
+                        <div class="mb-3 hidden">
+                            {{ form_label(demandeCommercialeForm.secheuse.GAZ, 'Gaz', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                            <div class="divider"></div>
+                            {{ form_widget(demandeCommercialeForm.secheuse.GAZ, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(demandeCommercialeForm.secheuse.GAZ) }}
+                        </div>
+                    </div>
+
+                    <div id="biomasseSection" class="mb-3" style="display: none;">
+                        {{ form_label(demandeCommercialeForm.secheuse.BIOMASSE, 'Type Biomasse', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                        <div class="divider"></div>
+                        {{ form_widget(demandeCommercialeForm.secheuse.BIOMASSE, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(demandeCommercialeForm.secheuse.BIOMASSE) }}
+                    </div>
+
+
+
+ 

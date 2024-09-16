@@ -20,20 +20,38 @@ class DemandeCommercialeFormType extends AbstractType
             ])
             ->add('TYPE_DEMANDE', TextType::class, [
                 'label' => 'Type DC',
-            ])
-            ->add('client', TextType::class, [
-                'label' => 'Client',
-            ])
-            ->add('secheuse', SecheuseFormType::class, [
-                'label' => false,
-                'required' => false,
             ]);
+        /*
+        ->add('client', TextType::class, [
+            'label' => 'Client',
+        ]);
+        */
+
+        // Ajouter dynamiquement un sous-formulaire en fonction du type de demande
+        if ('secheuse' === $options['type_demande']) {
+            $builder
+                ->add('secheuse', SecheuseFormType::class, [
+                    'label' => false,
+                    'required' => false,
+                ])
+                ->add('client', ClientFormType::class, [
+                    'label' => false,
+                    'required' => false,
+                ]);
+        } elseif ('stockage' === $options['type_demande']) {
+            $builder
+                ->add('client', ClientFormType::class, [
+                    'label' => false,
+                    'required' => false,
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => DemandeCommerciale::class,
+            'type_demande' => null, // Ajoute une option personnalisée pour le type de demande
         ]);
     }
 }
