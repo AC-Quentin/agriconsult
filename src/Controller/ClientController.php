@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ClientController extends AbstractController
 {
     #[Route('/client', name: 'app_client')]
-    public function index(): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $client = new Client();
         $form = $this->createForm(ClientFormType::class, $client);

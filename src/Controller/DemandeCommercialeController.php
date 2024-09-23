@@ -2,23 +2,43 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Entity\DemandeCommerciale;
 use App\Entity\Secheuse;
-use App\Entity\Client;
+use App\Entity\User;
 use App\Form\DemandeCommercialeFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class DemandeCommercialeController extends AbstractController
 {
     #[Route('/demande-commerciale/secheuse', name: 'app_demande_commerciale_secheuse')]
-    public function secheuse(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator): Response
+    public function secheuse(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, MailerInterface $mailer): Response
     {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        // Vérifiez si l'utilisateur est authentifié
+        if (!$user instanceof UserInterface) {
+            throw new AccessDeniedException('Vous devez être connecté pour faire une demande.');
+        }
+
+        // Si l'utilisateur est une instance de votre entité User, récupère son email
+        if ($user instanceof User) {
+            $userEmail = $user->getEmail();
+        } else {
+            throw new AccessDeniedException('Impossible de récupérer l\'email de l\'utilisateur.');
+        }
+
         $type_demande = 'secheuse';
         $demandeCommerciale = new DemandeCommerciale();
 
@@ -87,7 +107,7 @@ class DemandeCommercialeController extends AbstractController
 
             $clientData = $form->get('client')->getData();
             $client = $entityManager->getRepository(Client::class)->findOneBy(['id_client' => $clientData->getIdClient()]);
-    
+
             if (!$client) {
                 // Si le client n'existe pas, créer un nouveau client
                 $client = new Client();
@@ -96,7 +116,19 @@ class DemandeCommercialeController extends AbstractController
                 // Définir d'autres propriétés du client si nécessaire
                 $entityManager->persist($client);
             }
-    
+
+            // Envoi de l'email
+            $email = (new Email())
+                ->from($userEmail)
+                ->to('client-email@example.com')
+                ->subject($client->getIdClient())
+                ->text('Votre demande a bien été enregistrée.')
+                ->html('<p>Votre demande pour une '.$type_demande.' a bien été enregistrée.</p><br>
+                        <p>ID Client : '.$client->getIdClient().'</p><br>
+                        <p>Raison Sociale : '.$client->getRaisonSociale().'</p><br>');
+            // Envoi de l'email
+            $mailer->send($email);
+
             // Associe le client à la demande commerciale
             $demandeCommerciale->setClient($client);
 

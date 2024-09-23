@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Demande Commerciale</title>
+    <style>
+        /* Ajoutez ici des styles pour personnaliser l'apparence du PDF */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .details {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Demande Commerciale</h1>
+    <div class="details">
+        <p><strong>ID Demande :</strong> {{ demandeCommerciale.id }}</p>
+        <p><strong>Date :</strong> {{ demandeCommerciale.date|date('d/m/Y') }}</p>
+        <p><strong>Type de Demande :</strong> {{ demandeCommerciale.typeDemande }}</p>
+        <p><strong>Client :</strong> {{ client.raisonSociale }} (ID: {{ client.idClient }})</p>
+        <h2>Détails de la Secheuse</h2>
+        <ul>
+            <li>Type : {{ secheuse.typeSecheuse }}</li>
+            <li>Type de Plancher : {{ secheuse.typePlancher }}</li>
+            <!-- Ajoutez ici d'autres détails de la Secheuse -->
+        </ul>
+    </div>
+</body>
+</html>

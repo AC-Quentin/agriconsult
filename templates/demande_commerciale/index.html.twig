@@ -7,11 +7,11 @@
     <div class="container-fluid">
         <div class="row">
 
-            <div class="col-md-1 ps-0">
+            <div class="col-1 ps-0">
                 {{ include('demande_commerciale/sidebar/sidebar.html.twig') }}
             </div>
 
-            <div class="col-md-7">
+            <div class="col-lg-5 col ms-1">
                 <div class="row justify-content-sm-center h-100 mt-4">
                     <div class="col">
                         <div class="card shadow-lg">
@@ -38,10 +38,16 @@
                                     {{ form_widget(demandeCommercialeForm.TYPE_DEMANDE, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_errors(demandeCommercialeForm.TYPE_DEMANDE) }}
                                 </div>
+
+                                <div class="mb-3">
+                                    {{ form_label(demandeCommercialeForm.commentaire, 'Commentaire', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                    {{ form_widget(demandeCommercialeForm.commentaire, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(demandeCommercialeForm.commentaire) }}
+                                </div>
                                 
                                 {% if type_demande == 'secheuse' %}
                                     {# MODAL CLIENT #}
-                                    <div class="modal fade" id="ModalClient" tabindex="-1" aria-labelledby="ModalClient" aria-hidden="true">
+                                    <div class="modal fade" id="ModalClient" tabindex="-1" aria-labelledby="ModalClient" aria-hidden="true" >
                                         <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -56,7 +62,7 @@
                                     </div>
 
                                     {# MODAL SECHEUSE #}
-                                    <div class="modal fade" id="ModalSecheuse" tabindex="-1" aria-labelledby="ModalSecheuse" aria-hidden="true">
+                                    <div class="modal fade" id="ModalSecheuse" tabindex="-1" aria-labelledby="ModalSecheuse" aria-hidden="true" data-controller="tooltip">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -131,7 +137,7 @@
                 {{ form_end(demandeCommercialeForm) }}
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg col-12">
                 <div class="row justify-content-sm-center h-100 mt-4 m-2">
                     {{ include('demande_commerciale/preview/preview.html.twig') }}
                 </div>
@@ -140,11 +146,6 @@
         </div>
     </div>
 
-
-<div {{ stimulus_controller('hello') }}></div>
-<div {{ stimulus_controller('choice') }}></div>
-<div {{ stimulus_controller('module') }}></div>
-<div {{ stimulus_controller('preview')}}></div>
-
+    <div {{ stimulus_controller('form_view') }}></div>
 
 {% endblock %}
