@@ -44,6 +44,7 @@
                                     {{ form_widget(demandeCommercialeForm.commentaire, {'attr': {'class': 'form-control'}}) }}
                                     {{ form_errors(demandeCommercialeForm.commentaire) }}
                                 </div>
+
                                 
                                 {% if type_demande == 'secheuse' %}
                                     {# MODAL CLIENT #}
@@ -146,6 +147,8 @@
         </div>
     </div>
 
-    <div {{ stimulus_controller('form_view') }}></div>
+{# <a href="mailto:example@example.com?subject=Votre%20sujet&body=Votre%20message%20ici">Envoyer un email</a> #}
+
+<div {{ stimulus_controller('form_view') }}></div>
 
 {% endblock %}

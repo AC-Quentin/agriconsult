@@ -1,35 +1,237 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Demande Commerciale</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande de Devis</title>
     <style>
-        /* Ajoutez ici des styles pour personnaliser l'apparence du PDF */
         body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            margin: 0; /* Supprimer la marge par défaut du body */
+            padding: 20px; /* Optionnel : ajouter du padding autour du body */
         }
-        h1 {
-            text-align: center;
+
+        .header {
+            text-align: center; /* Centrer le contenu de l'en-tête */
+            margin-bottom: 20px; /* Espacement en bas de l'en-tête */
         }
-        .details {
-            margin: 20px;
+
+        .header img {
+            max-width: 150px; /* Limiter la taille du logo */
+            height: auto; /* Garder les proportions */
+        }
+
+        .header h2 {
+            margin: 5px 0; /* Espacement autour du titre */
+            font-size: 24px; /* Taille du titre */
+        }
+
+        .header p {
+            margin: 2px 0; /* Espacement autour des paragraphes */
+            font-size: 14px; /* Taille des paragraphes */
+        }
+
+        .custom-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: none; /* Retirer toute ombre de la carte */
+        }
+
+        .custom-card-header {
+            background-color: #f8f9fa;
+            padding: 10px;
+            text-align: center; /* Centrer le texte du header */
+            margin: 0; /* Enlever les marges */
+        }
+
+        .custom-card-header h5 {
+            margin: 0; /* Enlever la marge du titre */
+            font-size: 18px;
+        }
+
+        .custom-card-body {
+            padding: 15px;
+        }
+
+        .custom-card img {
+            width: auto; /* Laisser l'image garder ses proportions */
+            height: auto;
+            max-width: 80%; /* Limiter la largeur de l'image */
+            max-height: 150px; /* Limiter la hauteur de l'image */
+            display: block; /* Pour centrer l'image */
+            margin: 0 auto; /* Centrer l'image horizontalement */
+            box-shadow: none; /* Retirer toute ombre de l'image */
+        }
+
+        .highlight-client {
+            background-color: #33caff; /* Couleur pour le séparateur */
+            width: 1%;
+        }
+
+        .highlight-secheuse {
+            background-color: #ffdd33; /* Couleur pour le séparateur */
+            width: 1%;
+        }
+
+        .highlight-options {
+            background-color: #0d4efa; /* Couleur pour le séparateur */
+            width: 1%;
+        }
+
+        .highlight-vis-mobile {
+            background-color: #03c80f; /* Couleur pour le séparateur */
+            width: 1%;
+        }
+
+        .row {
+            display: -webkit-box; /* wkhtmltopdf uses this one */
+            display: flex;
+            -webkit-box-pack: center; /* wkhtmltopdf uses this one */
+            justify-content: center;
+        }
+
+        .row > div {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            padding: 2px; /* Espacement autour de chaque colonne */
+        }
+
+        .col-sm-2 {
+            width: 20%; /* 20% pour l'image */
+            text-align: center; /* Centrer l'image dans cette colonne */
+        }
+
+        .col-sm-1 {
+            width: 1%; /* 1% pour la colonne highlight */
+        }
+
+        .col-sm-8 {
+            width: 80%; /* 70% pour le contenu */
+        }
+
+        .card-text strong {
+            display: inline; /* S'assurer que le texte est en ligne */
         }
     </style>
 </head>
 <body>
-    <h1>Demande Commerciale</h1>
-    <div class="details">
-        <p><strong>ID Demande :</strong> {{ demandeCommerciale.id }}</p>
+
+    <!-- En-tête de la demande commerciale -->
+    <div class="header">
+        <img src="C:\xampp\htdocs\agriconsult\public\imgs\pdf\logo.png" alt="Logo de l'Entreprise">
+        <h2>Demande Commerciale</h2>
+        <p><strong>Initiales Commerciales :</strong> {{ user.username }}</p>
+        <p><strong>N° de Demande :</strong> {{ demandeCommerciale.id }}</p>
         <p><strong>Date :</strong> {{ demandeCommerciale.date|date('d/m/Y') }}</p>
-        <p><strong>Type de Demande :</strong> {{ demandeCommerciale.typeDemande }}</p>
-        <p><strong>Client :</strong> {{ client.raisonSociale }} (ID: {{ client.idClient }})</p>
-        <h2>Détails de la Secheuse</h2>
-        <ul>
-            <li>Type : {{ secheuse.typeSecheuse }}</li>
-            <li>Type de Plancher : {{ secheuse.typePlancher }}</li>
-            <!-- Ajoutez ici d'autres détails de la Secheuse -->
-        </ul>
+        <p><strong>Type de Demande :</strong> Devis {{ demandeCommerciale.typeDemande }}</p>
+        <p><strong>Gamme :</strong> ...</p>
     </div>
+
+    <!-- Preview Client -->
+    <div class="custom-card">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="C:\xampp\htdocs\agriconsult\public\imgs\pdf\picto-client.jpg" class="img-responsive" alt="Client Image">
+            </div>
+            <div class="col-sm-1 highlight-client"></div>
+            <div class="col-sm-8">
+                <div class="custom-card-header">
+                    <h5 class="card-title">Infos Client</h5>
+                </div>
+                <div class="custom-card-body">
+                    <p class="card-text">
+                        <strong>ID Client : </strong>{{ client.idClient }}</span><br>
+                        <strong>Raison Sociale : </strong>{{ client.raisonSociale }}</span><br>
+                        <strong>Adresse : </strong><br>
+                        <strong>Ville : </strong><br>
+                        <strong>Code Postal : </strong><br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Preview Secheuse -->
+    <div class="custom-card">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="C:\xampp\htdocs\agriconsult\public\imgs\pdf\SECHEUSE.jpg" class="img-responsive" alt="Client Image">
+            </div>
+            <div class="col-sm-1 highlight-secheuse"></div>
+            <div class="col-sm-8">
+                <div class="custom-card-header">
+                    <h5 class="card-title">Infos Sécheuse</h5>
+                </div>
+                <div class="custom-card-body">
+                    <p class="card-text">
+                        <strong>Quantite : </strong>{{ secheuse.quantite }}<br>
+                        <strong>Type Secheuse : </strong>{{ secheuse.typeSecheuse }}"<br>
+                        <strong>Type Plancher : </strong>{{ secheuse.typePlancher }}<br>
+                        <strong>Type Reprise : </strong>{{ secheuse.typeReprise }}<br>
+                        <strong>Debit Reprise : </strong>{{ secheuse.debitReprise }} T/h<br>
+                        <strong>Type Module : </strong>{{ secheuse.typeModule }} CV<br>
+                        <strong>Gaz : </strong>{{ secheuse.gaz }}<br>
+                        <strong>Biomasse : </strong>{{ secheuse.biomasse }}<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if options %}
+        <!-- Preview Options -->
+        <div class="custom-card">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img src="C:\xampp\htdocs\agriconsult\public\imgs\pdf\picto-options.jpg" class="img-responsive" alt="Client Image">
+                </div>
+                <div class="col-sm-1 highlight-options"></div>
+                <div class="col-sm-8">
+                    <div class="custom-card-header">
+                        <h5 class="card-title">Options</h5>
+                    </div>
+                    <div class="custom-card-body">
+                         <p class="card-text">
+                        <strong>Vis Brassage : </strong>{{ secheuse.visBrassage }}<br>
+                        <strong>Prenettoyeur : </strong>{{ secheuse.prenettoyeur }}<br>
+                        <strong>B2D : </strong>{{ secheuse.b2d }}<br>
+                        <strong>Debit Vis : </strong>{{ secheuse.debitVis }}<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    
+    {% if visMobile %}
+        <!-- Preview Options -->
+        <div class="custom-card">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img src="C:\xampp\htdocs\agriconsult\public\imgs\pdf\Vis Mobile.png" class="img-responsive" alt="Client Image">
+                </div>
+                <div class="col-sm-1 highlight-vis-mobile"></div>
+                <div class="col-sm-8">
+                    <div class="custom-card-header">
+                        <h5 class="card-title">Vis Mobile</h5>
+                    </div>
+                    <div class="custom-card-body">
+                         <p class="card-text">
+                        <strong>Vis : </strong>{{ secheuse.visMobile }}<br>
+                        <strong>Sortie Orientable : </strong><br>
+                        <strong>Bac : </strong><br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
 </body>
 </html>
+

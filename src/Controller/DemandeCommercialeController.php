@@ -18,11 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Knp\Snappy\Pdf;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class DemandeCommercialeController extends AbstractController
 {
     #[Route('/demande-commerciale/secheuse', name: 'app_demande_commerciale_secheuse')]
-    public function secheuse(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, MailerInterface $mailer): Response
+    public function secheuse(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, MailerInterface $mailer, Pdf $knpSnappyPdf, SessionInterface $session): Response
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -105,6 +107,20 @@ class DemandeCommercialeController extends AbstractController
                 }
             }
 
+            // Vérifie si les options sont définies pour affichage dans le PDF
+            if ($secheuseData->getVisBrassage() !== null || $secheuseData->getPrenettoyeur() !== null || $secheuseData->getB2D() !== null || $secheuseData->getDebitVis() !== null) {
+                $options = true;
+            } else {
+                $options = false;
+            }
+
+            // Vérifie si la vis mobile est définie pour affichage dans le PDF
+            if ($secheuseData->getVisMobile() !== null) {
+                $visMobile = true;
+            } else {
+                $visMobile = false;
+            }
+
             $clientData = $form->get('client')->getData();
             $client = $entityManager->getRepository(Client::class)->findOneBy(['id_client' => $clientData->getIdClient()]);
 
@@ -117,27 +133,70 @@ class DemandeCommercialeController extends AbstractController
                 $entityManager->persist($client);
             }
 
-            // Envoi de l'email
-            $email = (new Email())
-                ->from($userEmail)
-                ->to('client-email@example.com')
-                ->subject($client->getIdClient())
-                ->text('Votre demande a bien été enregistrée.')
-                ->html('<p>Votre demande pour une '.$type_demande.' a bien été enregistrée.</p><br>
-                        <p>ID Client : '.$client->getIdClient().'</p><br>
-                        <p>Raison Sociale : '.$client->getRaisonSociale().'</p><br>');
-            // Envoi de l'email
-            $mailer->send($email);
-
             // Associe le client à la demande commerciale
             $demandeCommerciale->setClient($client);
 
             $entityManager->persist($demandeCommerciale);
             $entityManager->flush();
 
+            // Génération du PDF
+            $html = $this->renderView('pdf/demande_commerciale.html.twig', [
+                'type_demande' => $type_demande,
+                'demandeCommerciale' => $demandeCommerciale,
+                'secheuse' => $secheuseData,
+                'client' => $client,
+                'user' => $user,
+                'options' => $options,
+                'visMobile' => $visMobile,
+            ]);
+
+            $knpSnappyPdf->setOption('enable-javascript', true);
+            $knpSnappyPdf->setOption('enable-local-file-access', true);
+            $pdfContent = $knpSnappyPdf->getOutputFromHtml($html);
+
+            $pdfName = 'demande_commerciale_'.$demandeCommerciale->getId().' - '. $clientData->getIdClient(). '.pdf';
+
+            // Stocke temporairement le PDF dans la session
+            $session->set('pdf_content', $pdfContent);
+            $session->set('pdf_name', $pdfName);
+
+            // Crée le lien mailto
+            $destinataire = 'x+1190066889395939@mail.asana.com';
+            $sujet = $client->getIdClient() . " - " . $client->getRaisonSociale();
+            $corps = "Votre demande pour une {$type_demande} a bien été enregistrée.\n\n"
+                . "ID Client : {$client->getIdClient()}\n"
+                . "Raison Sociale : {$client->getRaisonSociale()}";
+
+            // Encode les paramètres pour l'URL
+            $sujetEncode = rawurlencode($sujet);
+            $corpsEncode = rawurlencode($corps);
+
+            // Crée le lien mailto
+            $mailtoLink = "mailto:{$destinataire}?subject={$sujetEncode}&body={$corpsEncode}";
+
+
+            // Redirige vers le lien mailto
+
+
+            /* Envoi de l'email
+            $email = (new Email())
+                ->from($userEmail)
+                ->to('x+1190066889395939@mail.asana.com')
+                ->subject($client->getIdClient() & " - " & $client->getRaisonSociale())
+                ->text('Votre demande a bien été enregistrée.')
+                ->html('<p>Votre demande pour une '.$type_demande.' a bien été enregistrée.</p><br>
+                        <p>ID Client : '.$client->getIdClient().'</p><br>
+                        <p>Raison Sociale : '.$client->getRaisonSociale().'</p><br>')
+                ->attach($pdfContent, $pdfName, 'application/pdf');
+
+            // Envoi de l'email
+            $mailer->send($email);
+            */
+
             // Redirige vers la page d'accueil avec l'ID en paramètre
             $url = $urlGenerator->generate('app_home_page', [
                 'demandeId' => $demandeCommerciale->getId(),
+                'mailto' => $mailtoLink,
             ]);
 
             return new RedirectResponse($url);
@@ -146,6 +205,7 @@ class DemandeCommercialeController extends AbstractController
         return $this->render('demande_commerciale/index.html.twig', [
             'demandeCommercialeForm' => $form->createView(),
             'type_demande' => $type_demande,
+
         ]);
     }
 
@@ -170,4 +230,5 @@ class DemandeCommercialeController extends AbstractController
             'type_demande' => $type_demande,
         ]);
     }
+
 }

@@ -70,4 +70,14 @@
     </div>
   </div>
 
+  {% if app.request.query.get('mailto') is not null %}
+      <script type="text/javascript">
+          // Ouvre la fenêtre mailto
+          window.location.href = "{{ app.request.query.get('mailto') }}";
+
+          // Lance automatiquement le téléchargement du PDF
+          window.location.href = "{{ path('telecharger_pdf') }}";
+      </script>
+  {% endif %}
+
 {% endblock %}
