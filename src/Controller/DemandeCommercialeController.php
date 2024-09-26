@@ -8,18 +8,18 @@ use App\Entity\Secheuse;
 use App\Entity\User;
 use App\Form\DemandeCommercialeFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Knp\Snappy\Pdf;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class DemandeCommercialeController extends AbstractController
 {
@@ -108,14 +108,14 @@ class DemandeCommercialeController extends AbstractController
             }
 
             // Vérifie si les options sont définies pour affichage dans le PDF
-            if ($secheuseData->getVisBrassage() !== null || $secheuseData->getPrenettoyeur() !== null || $secheuseData->getB2D() !== null || $secheuseData->getDebitVis() !== null) {
+            if (null !== $secheuseData->getVisBrassage() || null !== $secheuseData->getPrenettoyeur() || null !== $secheuseData->getB2D() || null !== $secheuseData->getDebitVis()) {
                 $options = true;
             } else {
                 $options = false;
             }
 
             // Vérifie si la vis mobile est définie pour affichage dans le PDF
-            if ($secheuseData->getVisMobile() !== null) {
+            if (null !== $secheuseData->getVisMobile()) {
                 $visMobile = true;
             } else {
                 $visMobile = false;
@@ -154,7 +154,7 @@ class DemandeCommercialeController extends AbstractController
             $knpSnappyPdf->setOption('enable-local-file-access', true);
             $pdfContent = $knpSnappyPdf->getOutputFromHtml($html);
 
-            $pdfName = 'demande_commerciale_'.$demandeCommerciale->getId().' - '. $clientData->getIdClient(). '.pdf';
+            $pdfName = 'demande_commerciale_'.$demandeCommerciale->getId().' - '.$clientData->getIdClient().'.pdf';
 
             // Stocke temporairement le PDF dans la session
             $session->set('pdf_content', $pdfContent);
@@ -162,10 +162,10 @@ class DemandeCommercialeController extends AbstractController
 
             // Crée le lien mailto
             $destinataire = 'x+1190066889395939@mail.asana.com';
-            $sujet = $client->getIdClient() . " - " . $client->getRaisonSociale();
+            $sujet = $client->getIdClient().' - '.$client->getRaisonSociale();
             $corps = "Votre demande pour une {$type_demande} a bien été enregistrée.\n\n"
-                . "ID Client : {$client->getIdClient()}\n"
-                . "Raison Sociale : {$client->getRaisonSociale()}";
+                ."ID Client : {$client->getIdClient()}\n"
+                ."Raison Sociale : {$client->getRaisonSociale()}";
 
             // Encode les paramètres pour l'URL
             $sujetEncode = rawurlencode($sujet);
@@ -174,9 +174,7 @@ class DemandeCommercialeController extends AbstractController
             // Crée le lien mailto
             $mailtoLink = "mailto:{$destinataire}?subject={$sujetEncode}&body={$corpsEncode}";
 
-
             // Redirige vers le lien mailto
-
 
             /* Envoi de l'email
             $email = (new Email())
@@ -205,7 +203,6 @@ class DemandeCommercialeController extends AbstractController
         return $this->render('demande_commerciale/index.html.twig', [
             'demandeCommercialeForm' => $form->createView(),
             'type_demande' => $type_demande,
-
         ]);
     }
 
@@ -230,5 +227,4 @@ class DemandeCommercialeController extends AbstractController
             'type_demande' => $type_demande,
         ]);
     }
-
 }
