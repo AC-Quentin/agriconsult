@@ -38,7 +38,7 @@ class SecheuseFormType extends AbstractType
         ];
 
         $collection_debit_reprise = [
-            '60' => '60',
+            '65' => '65',
             '100' => '100',
         ];
 
@@ -47,6 +47,27 @@ class SecheuseFormType extends AbstractType
             '20CV' => '20',
             '25CV' => '25',
             '30CV' => '30',
+        ];
+
+        $collection_gaz = [
+            'PROPANE' => 'PROPANE',
+            'GAZ NATUREL' => 'GAZ NATUREL',
+        ];
+
+        $collection_oui_non = [
+            'OUI' => 'OUI',
+            'NON' => 'NON',
+        ];
+
+        $collection_prenettoyeur = [
+            'SUR TV' => 'SUR TV',
+            'SUR TOIT' => 'SUR TOIT',
+            'SUR TV ET TOIT' => 'SUR TV ET TOIT',
+        ];
+
+        $collection_debit_vis = [
+            '65' => '65T/h',
+            '100' => '100T/h',
         ];
 
         $builder
@@ -75,33 +96,42 @@ class SecheuseFormType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
             ])
-            ->add('GAZ', TextType::class, [
-                'label' => 'Gaz',
-                'required' => false,
+            ->add('GAZ', ChoiceType::class, [
+                'choices' => $collection_gaz,
+                'multiple' => false,
+                'expanded' => true,
             ])
             ->add('BIOMASSE', TextType::class, [
                 'label' => 'Type Biomasse',
                 'required' => false,
             ])
-            ->add('VIS_BRASSAGE', TextType::class, [
-                'label' => 'Vis brassage',
-                'required' => false,
+            ->add('VIS_BRASSAGE', ChoiceType::class, [
+                'choices' => $collection_oui_non,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Choisissez une option',
             ])
             ->add('QUANTITE', IntegerType::class, [
                 'label' => 'Quantité',
                 'required' => true,
             ])
-            ->add('PRENETTOYEUR', TextType::class, [
-                'label' => 'Prenettoyeur',
-                'required' => false,
+            ->add('PRENETTOYEUR', ChoiceType::class, [
+                'choices' => $collection_prenettoyeur,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Choisissez une option',
             ])
-            ->add('B2D', TextType::class, [
-                'label' => 'B2D',
-                'required' => false,
+            ->add('B2D', ChoiceType::class, [
+                'choices' => $collection_oui_non,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Choisissez une option',
             ])
-            ->add('DEBIT_VIS', TextType::class, [
-                'label' => 'Débit Vis',
-                'required' => false,
+            ->add('DEBIT_VIS', ChoiceType::class, [
+                'choices' => $collection_debit_vis,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Choisissez une option',
             ])
             ->add('VIS_MOBILE', TextType::class, [
                 'label' => 'Vis Mobile',
