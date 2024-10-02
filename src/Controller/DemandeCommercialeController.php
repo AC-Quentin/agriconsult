@@ -73,6 +73,8 @@ class DemandeCommercialeController extends AbstractController
                     'b2d' => $secheuseData->getB2D(),
                     'debit_vis' => $secheuseData->getDebitVis(),
                     'vis_mobile' => $secheuseData->getVisMobile(),
+                    'vis_mobile_bac' => $secheuseData->getVisMobileBac(),
+                    'vis_mobile_sortie_orientable' => $secheuseData->getVisMobileSortieOrientable(),
                 ];
 
                 // Cherche une Secheuse existante correspondant aux critères
@@ -99,6 +101,8 @@ class DemandeCommercialeController extends AbstractController
                     $newSecheuse->setB2D($secheuseData->getB2D());
                     $newSecheuse->setDebitVis($secheuseData->getDebitVis());
                     $newSecheuse->setVisMobile($secheuseData->getVisMobile());
+                    $newSecheuse->setVisMobileBac($secheuseData->getVisMobileBac());
+                    $newSecheuse->setVisMobileSortieOrientable($secheuseData->getVisMobileSortieOrientable());
 
                     // Associe la nouvelle Secheuse à la demande commerciale
                     $entityManager->persist($newSecheuse);
@@ -145,6 +149,7 @@ class DemandeCommercialeController extends AbstractController
                 'demandeCommerciale' => $demandeCommerciale,
                 'secheuse' => $secheuseData,
                 'client' => $client,
+                'clientData' => $clientData,
                 'user' => $user,
                 'options' => $options,
                 'visMobile' => $visMobile,
@@ -163,33 +168,18 @@ class DemandeCommercialeController extends AbstractController
             // Crée le lien mailto
             $destinataire = 'x+1190066889395939@mail.asana.com';
             $sujet = $client->getIdClient().' - '.$client->getRaisonSociale();
-            $corps = "Votre demande pour une {$type_demande} a bien été enregistrée.\n\n"
-                ."ID Client : {$client->getIdClient()}\n"
-                ."Raison Sociale : {$client->getRaisonSociale()}";
+            $corps = "ID Client : {$client->getIdClient()}\n"
+                    ."Raison Sociale : {$client->getRaisonSociale()}\n"
+                    ."Nom Client :  {$clientData->getNomPrenom()}\n"
+                    ."Code Postal : {$clientData->getCodePostal()} \n"
+                    .'Délai souhaité : ';
 
             // Encode les paramètres pour l'URL
             $sujetEncode = rawurlencode($sujet);
             $corpsEncode = rawurlencode($corps);
 
             // Crée le lien mailto
-            $mailtoLink = "mailto:{$destinataire}?subject={$sujetEncode}&body={$corpsEncode}";
-
-            // Redirige vers le lien mailto
-
-            /* Envoi de l'email
-            $email = (new Email())
-                ->from($userEmail)
-                ->to('x+1190066889395939@mail.asana.com')
-                ->subject($client->getIdClient() & " - " & $client->getRaisonSociale())
-                ->text('Votre demande a bien été enregistrée.')
-                ->html('<p>Votre demande pour une '.$type_demande.' a bien été enregistrée.</p><br>
-                        <p>ID Client : '.$client->getIdClient().'</p><br>
-                        <p>Raison Sociale : '.$client->getRaisonSociale().'</p><br>')
-                ->attach($pdfContent, $pdfName, 'application/pdf');
-
-            // Envoi de l'email
-            $mailer->send($email);
-            */
+            $mailtoLink = "mailto:{$destinataire}?subject={$sujetEncode}?body={$corpsEncode}";
 
             // Redirige vers la page d'accueil avec l'ID en paramètre
             $url = $urlGenerator->generate('app_home_page', [

@@ -6,10 +6,10 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-3 ps-0">
+      <div class="col-4">
         {{ include('sidebar.html.twig') }}
       </div>
-      <div class="col-md-8">
+      <div class="col-7">
 
   {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COMMERCIALE') %}
       {% if app.request.query.get('demandeId') is not null %}
@@ -28,22 +28,22 @@
               <p>Demande commerciale pour une ou plusieurs cellules de stockage</p>
             </div>
             <div class="ico-card">
-            <i><img src="imgs/stockage.png" alt="logo" height="200"></i>
+            <i><img src="{{ asset('imgs/stockage.png') }}" alt="logo" height="200"></i>
           </div>
           </div>
         </a>
         </div>
 
-        <div class="col-md-6 col-lg-4 column">
+        <div class="col-md-6 col-lg-4 column" >
           <a href="{{ path ('app_demande_commerciale_secheuse') }}" class="nav-link">
             <div class="card gr-2">
               <div class="txt">
                 <h1>NOUVELLE -</br>
         SECHEUSE</h1>
-                <p>Demande commerciale pour une cellule Sécheuse</p>
+                <p>Demande commerciale pour une ou plusieurs cellules Sécheuse</p>
               </div>
             <div class="ico-card">
-              <i><img src="imgs/secheuse.png" alt="logo" height="200"></i>
+              <i><img src="{{ asset('imgs/secheuse.png') }}" alt="logo" height="200"></i>
             </div>
             </div>
           </a>
@@ -57,7 +57,7 @@
               <p>Ensemble à personnalisé stockage, séchage, manutention, ...</p>
             </div>
           <div class="ico-card">
-            <i><img src="imgs/silo.png" alt="logo" height="200"></i>
+            <i><img src="{{ asset('imgs/silo.png') }}" alt="logo" height="200"></i>
           </div>
           </div>
         </div>

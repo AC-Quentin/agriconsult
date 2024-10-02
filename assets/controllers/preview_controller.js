@@ -4,8 +4,17 @@ export default class extends Controller {
     connect() {
 
             // Cibler les champs OPTIONS et les spans du résumé
-            var tableauClientInputs = ['input[name="demande_commerciale_form[client][id_client]"]',
-                'input[name="demande_commerciale_form[client][raison_sociale]"]'];
+            var tableauClientInputs = [
+                'input[name="demande_commerciale_form[client][id_client]"]',
+                'input[name="demande_commerciale_form[client][raison_sociale]"]',
+                'input[name="demande_commerciale_form[client][nom_prenom]"]',
+                'input[name="demande_commerciale_form[client][adresse]"]',
+                'input[name="demande_commerciale_form[client][code_postal]"]',
+                'input[name="demande_commerciale_form[client][ville]"]',
+                'input[name="demande_commerciale_form[client][email]"]',
+                'input[name="demande_commerciale_form[client][telephone]"]',
+                'input[name="demande_commerciale_form[client][mobile]"]',
+            ];
 
             var secheuseClientInputs = document.querySelectorAll(tableauClientInputs.join(','));
             var secheuseResumeClient = document.getElementById('preview-client');
@@ -56,12 +65,60 @@ export default class extends Controller {
                         secheuseResumeRaisonSocialeSpan.textContent = secheuseRaisonSocialeInput.value;
                     });
 
+                    var secheuseNomPrenomInput = document.getElementById('demande_commerciale_form_client_nom_prenom');
+                    var secheuseResumeNomPrenomSpan = document.getElementById('preview-nom-prenom');
+
+                    secheuseNomPrenomInput.addEventListener('input', function() {
+                        secheuseResumeNomPrenomSpan.textContent = secheuseNomPrenomInput.value;
+                    });
+
+                    var secheuseAdresseInput = document.getElementById('demande_commerciale_form_client_adresse');
+                    var secheuseResumeAdresseSpan = document.getElementById('preview-adresse');
+
+                    secheuseAdresseInput.addEventListener('input', function() {
+                        secheuseResumeAdresseSpan.textContent = secheuseAdresseInput.value;
+                    });
+
+                    var secheuseCodePostalInput = document.getElementById('demande_commerciale_form_client_code_postal');
+                    var secheuseResumeCodePostalSpan = document.getElementById('preview-code-postal');
+
+                    secheuseCodePostalInput.addEventListener('input', function() {
+                        secheuseResumeCodePostalSpan.textContent = secheuseCodePostalInput.value;
+                    });
+
+                    var secheuseVilleInput = document.getElementById('demande_commerciale_form_client_ville');
+                    var secheuseResumeVilleSpan = document.getElementById('preview-ville');
+
+                    secheuseVilleInput.addEventListener('input', function() {
+                        secheuseResumeVilleSpan.textContent = secheuseVilleInput.value;
+                    });
+
+                    var secheuseEmailInput = document.getElementById('demande_commerciale_form_client_email');
+                    var secheuseResumeEmailSpan = document.getElementById('preview-email');
+
+                    secheuseEmailInput.addEventListener('input', function() {
+                        secheuseResumeEmailSpan.textContent = secheuseEmailInput.value;
+                    }); 
+
+                    var secheuseTelephoneInput = document.getElementById('demande_commerciale_form_client_telephone');
+                    var secheuseResumeTelephoneSpan = document.getElementById('preview-telephone');
+
+                    secheuseTelephoneInput.addEventListener('input', function() {
+                        secheuseResumeTelephoneSpan.textContent = secheuseTelephoneInput.value;
+                    });
+
+                    var secheuseMobileInput = document.getElementById('demande_commerciale_form_client_mobile');
+                    var secheuseResumeMobileSpan = document.getElementById('preview-mobile');
+
+                    secheuseMobileInput.addEventListener('input', function() {
+                        secheuseResumeMobileSpan.textContent = secheuseMobileInput.value;
+                    });
+
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
                 // Cibler tous les champs du formulaire pour la SECHEUSE
                 var formFields = document.querySelectorAll('input[name="demande_commerciale_form[secheuse][QUANTITE]"]');
-                console.log(formFields);
                 var previewElement = document.getElementById('preview-secheuse');
             
                 // Fonction pour vérifier si un champ est rempli
@@ -350,6 +407,7 @@ export default class extends Controller {
             secheuseVisMobileInputs.forEach(function(field) {
                 field.addEventListener('input', checkFormVisMobile);
                 field.addEventListener('change', checkFormVisMobile);
+                field.addEventListener('click', checkFormVisMobile);
             });
         
             // ACTIONS SUIVANT LE CHANGEMENT DE VALEUR DES INPUTS
@@ -357,18 +415,42 @@ export default class extends Controller {
             var secheuseOptionVisMobile = document.querySelectorAll('input[name="demande_commerciale_form[secheuse][VIS_MOBILE]"]');
             var secheuseResumeOptionVisMobile = document.getElementById('preview-vis-mobile');
         
-                // Boucle sur tous les éléments récupérés par querySelectorAll
-                secheuseOptionVisMobile.forEach(function(option) {
-                    option.addEventListener('change', function() {
-                        // Met à jour le texte lorsque la valeur change
-                        secheuseResumeOptionVisMobile.textContent = this.value;
-                    });
+            // Boucle sur tous les éléments récupérés par querySelectorAll
+            secheuseOptionVisMobile.forEach(function(input) {
+                input.addEventListener('click', function() {
+                    // Met à jour le texte lorsque la valeur change
+                    if (input.checked) {          
+                        // Mettre à jour le texte du résumé avec la valeur sélectionnée
+                        secheuseResumeOptionVisMobile.textContent = input.value;
+                        }
                 });
+            });
 
+            // VIS MOBILE BAC
+            var secheuseOptionVisMobileBac = document.querySelectorAll('select[name="demande_commerciale_form[secheuse][VIS_MOBILE_BAC]"]');
+            var secheuseResumeOptionVisMobileBac = document.getElementById('preview-vis-mobile-bac');
+                
+            // Boucle sur tous les éléments récupérés par querySelectorAll
+            secheuseOptionVisMobileBac.forEach(function(option) {
+                option.addEventListener('change', function() {
+                // Met à jour le texte lorsque la valeur change
+                secheuseResumeOptionVisMobileBac.textContent = this.value;
+                });
+            });
+            
+            // VIS MOBILE SORTIE ORIENTABLE
+            var secheuseOptionVisMobileSortieOrientable = document.querySelectorAll('select[name="demande_commerciale_form[secheuse][VIS_MOBILE_SORTIE_ORIENTABLE]"]');
+            var secheuseResumeOptionVisMobileSortieOrientable = document.getElementById('preview-vis-mobile-sortie-orientable');
+                
+            // Boucle sur tous les éléments récupérés par querySelectorAll
+            secheuseOptionVisMobileSortieOrientable.forEach(function(option) {
+                option.addEventListener('change', function() {
+                // Met à jour le texte lorsque la valeur change
+                secheuseResumeOptionVisMobileSortieOrientable.textContent = this.value;
+                });
+            });
         //----------------------------------------------------------------------------------------------------------------------------
-            var formulaire = document.getElementById('monFormulaire');
-            var boutonReset = document.getElementById('bouton-reset'); // Assurez-vous d'avoir un bouton reset dans votre HTML
-            boutonReset.addEventListener('click', formulaire.reset());
+
         };
 }
 

@@ -115,6 +115,11 @@
 
         .card-text strong {
             display: inline; /* S'assurer que le texte est en ligne */
+            text-align: justify; /* Justifie le texte */
+        }
+        .col-6 {
+            width: 50%; /* Chaque colonne prend 50% de la largeur */
+            padding: 10px; /* Espacement autour de chaque colonne, si nécessaire */
         }
     </style>
 </head>
@@ -143,13 +148,25 @@
                     <h5 class="card-title">Infos Client</h5>
                 </div>
                 <div class="custom-card-body">
-                    <p class="card-text">
-                        <strong>ID Client : </strong>{{ client.idClient }}</span><br>
-                        <strong>Raison Sociale : </strong>{{ client.raisonSociale }}</span><br>
-                        <strong>Adresse : </strong><br>
-                        <strong>Ville : </strong><br>
-                        <strong>Code Postal : </strong><br>
-                    </p>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="card-text">
+                                <strong>ID Client : </strong>{{ client.idClient }}<br>
+                                <strong>Raison Sociale : </strong>{{ client.raisonSociale }}<br>
+                                <strong>Nom Prénom : </strong>{{ clientData.nomPrenom }}<br>
+                                <strong>Adresse : </strong>{{ clientData.adresse }}<br>
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text">
+                                <strong>Ville : </strong>{{ clientData.ville }}<br>
+                                <strong>Code Postal : </strong>{{ clientData.codePostal }}<br>
+                                <strong>Email : </strong>{{ clientData.email }}<br>
+                                <strong>Téléphone : </strong>{{ clientData.telephone }}<br>
+                                <strong>Mobile : </strong>{{ clientData.mobile }}<br>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -223,8 +240,8 @@
                     <div class="custom-card-body">
                          <p class="card-text">
                         <strong>Vis : </strong>{{ secheuse.visMobile }}<br>
-                        <strong>Sortie Orientable : </strong><br>
-                        <strong>Bac : </strong><br>
+                        <strong>Sortie Orientable : </strong>{{ secheuse.visMobileBac }}<br>
+                        <strong>Bac : </strong>{{ secheuse.visMobileSortieOrientable }}<br>
                     </p>
                 </div>
             </div>

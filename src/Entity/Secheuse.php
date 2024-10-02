@@ -49,6 +49,12 @@ class Secheuse
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $vis_mobile = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $vis_mobile_bac = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $vis_mobile_sortie_orientable = null;
+
     #[ORM\Column]
     private ?int $quantite = null;
 
@@ -202,6 +208,30 @@ class Secheuse
     public function setVisMobile(?string $vis_mobile): static
     {
         $this->vis_mobile = $vis_mobile;
+
+        return $this;
+    }
+
+    public function getVisMobileBac(): ?string
+    {
+        return $this->vis_mobile_bac;
+    }
+
+    public function setVisMobileBac(?string $vis_mobile_bac): static
+    {
+        $this->vis_mobile_bac = $vis_mobile_bac;
+
+        return $this;
+    }
+
+    public function getVisMobileSortieOrientable(): ?string
+    {
+        return $this->vis_mobile_sortie_orientable;
+    }
+
+    public function setVisMobileSortieOrientable(?string $vis_mobile_sortie_orientable): static
+    {
+        $this->vis_mobile_sortie_orientable = $vis_mobile_sortie_orientable;
 
         return $this;
     }

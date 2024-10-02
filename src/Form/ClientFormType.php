@@ -15,13 +15,13 @@ class ClientFormType extends AbstractType
         $builder
             ->add('id_client', TextType::class, [
                 'label' => 'id_client',
-                'required' => false,
             ])
             ->add('raison_sociale', TextType::class, [
                 'label' => 'raison_sociale',
-                'required' => false,
             ])
-            /*
+            ->add('nom_prenom', TextType::class, [
+                'label' => 'nom_prenom',
+            ])
             ->add('adresse', TextType::class, [
                 'label' => 'adresse',
                 'required' => false,
@@ -46,7 +46,7 @@ class ClientFormType extends AbstractType
                 'label' => 'email',
                 'required' => false,
             ])
-            */
+
         ;
     }
 

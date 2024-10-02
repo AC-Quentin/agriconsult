@@ -18,7 +18,11 @@
                 </li>
             {% endif %}
             <li class="nav-item"><a href="{{ path('app_profile') }}" class="nav-link">Profile</a></li>
-            <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Logout ({{ app.user.userIdentifier }})</a></li>
+            <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Logout (
+                {% if app.user %}
+                {{ app.user.userIdentifier }}
+                {% endif %}
+                )</a></li>
         </ul>
         </header>
         

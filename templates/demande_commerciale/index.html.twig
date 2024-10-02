@@ -16,9 +16,10 @@
                     <div class="col">
                         <div class="card shadow-lg">
                             <div class="container card-body p-5">
+
                                 {{ form_errors(demandeCommercialeForm) }}
 
-                                {{ form_start(demandeCommercialeForm) }}
+                                {{ form_start(demandeCommercialeForm, {'attr': {'id': 'form_submit'}}) }}
 
                                 {% if type_demande == 'secheuse' %}
                                 <h1 class="fs-4 card-title fw-bold mb-4">Demande Commerciale - Secheuse</h1>
@@ -26,10 +27,12 @@
                                 {% if type_demande == 'stockage' %}
                                 <h1 class="fs-4 card-title fw-bold mb-4">Demande Commerciale - Stockage</h1>
                                 {% endif %}
+
+
                                 
                                 <div class="mb-3">
                                     {{ form_label(demandeCommercialeForm.date, 'Date', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
-                                    {{ form_widget(demandeCommercialeForm.date, {'attr': {'class': 'form-control', 'required': '', 'autofocus': ''}}) }}
+                                    {{ form_widget(demandeCommercialeForm.date, {'attr': {'class': 'form-control', 'required': true}}) }}
                                     {{ form_errors(demandeCommercialeForm.date) }}
                                 </div>
 
@@ -51,9 +54,14 @@
                                     <div class="modal fade" id="ModalClient" tabindex="-1" aria-labelledby="ModalClient" aria-hidden="true" >
                                         <div class="modal-dialog">
                                         <div class="modal-content">
+                                            <div class="modal-header bg-card-custom">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Client</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
                                             <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Client</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <div class="col-12">
+                                                    <button id="client_reset" type="button" class="btn btn-warning" data-controller="reset-client">Réinitialiser</button>
+                                                </div>
                                             </div>
                                             <div class="modal-body">
                                                 {{ include('demande_commerciale/Client/client.html.twig') }}
@@ -67,6 +75,7 @@
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Sécheuse</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -96,8 +105,13 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5">Vis Mobile</h1>
+                                            <h1 class="modal-title fs-5">Vis Mobile</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-header">
+                                            <div class="col-12">
+                                                <button id="vis_mobile_reset" type="button" class="btn btn-warning" data-controller="reset-vis-mobile">Réinitialiser</button>
+                                            </div>
                                         </div>
                                         <div class="modal-body">
                                             {{ include('demande_commerciale/vis mobile/vis mobile.html.twig') }}
@@ -114,7 +128,7 @@
                                         <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Client</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Stockage</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -127,17 +141,22 @@
                                 {{ include('demande_commerciale/stockage/stockage.html.twig') }}
 
                                 {% endif %}
+
+                                <div class="align-items-center d-flex">
+                                    <button id="check-form-submit" type="button" class="btn btn-primary ms-auto" data-controller="submit">Submit</button>
+                                </div>
+
+                                <span id="alert_check_form_submit"></span>
+
                             </div>
-                            <div class="align-items-center d-flex">
-                                <button type="submit" class="btn btn-primary ms-auto">Submit</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
-
-                {{ form_end(demandeCommercialeForm) }}
+           
             </div>
-
+{{ form_end(demandeCommercialeForm) }}
+            
             <div class="col-lg col-12">
                 <div class="row justify-content-sm-center h-100 mt-4 m-2">
                     {{ include('demande_commerciale/preview/preview.html.twig') }}
@@ -147,8 +166,8 @@
         </div>
     </div>
 
-{# <a href="mailto:example@example.com?subject=Votre%20sujet&body=Votre%20message%20ici">Envoyer un email</a> #}
 
 <div {{ stimulus_controller('form_view') }}></div>
+
 
 {% endblock %}
