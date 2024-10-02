@@ -18,7 +18,6 @@ export default class extends Controller {
         // Ajouter l'écouteur de clic pour tous les conteneurs d'images
         imgContainers.forEach(imgContainer => {
             imgContainer.addEventListener('click', function(event) {
-                console.error('click');
                 const target = event.target;
                 if (target.tagName === 'IMG') {
                     const radioId = target.getAttribute('data-radio-id');
@@ -37,4 +36,3 @@ export default class extends Controller {
         showNextField();
     }
 }
-
