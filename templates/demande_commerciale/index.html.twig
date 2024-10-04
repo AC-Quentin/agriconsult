@@ -18,7 +18,7 @@
                             <div class="container card-body p-5">
                                 {{ form_errors(demandeCommercialeForm) }}
 
-                                {{ form_start(demandeCommercialeForm) }}
+                                {{ form_start(demandeCommercialeForm, {'attr': {'id': 'form_submit'}}) }}
 
                                 {% if type_demande == 'secheuse' %}
                                 <h1 class="fs-4 card-title fw-bold mb-4">Demande Commerciale - Secheuse</h1>
@@ -51,9 +51,12 @@
                                     <div class="modal fade" id="ModalClient" tabindex="-1" aria-labelledby="ModalClient" aria-hidden="true" >
                                         <div class="modal-dialog">
                                         <div class="modal-content">
+                                            <div class="modal-header bg-custom">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Client</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
                                             <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Client</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button id="reset-client" type="button" class="btn btn-warning" data-controller="reset-client">Réinitialiser</button>
                                             </div>
                                             <div class="modal-body">
                                                 {{ include('demande_commerciale/Client/client.html.twig') }}
@@ -67,6 +70,7 @@
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Informations Sécheuse</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -129,8 +133,10 @@
                                 {% endif %}
                             </div>
                             <div class="align-items-center d-flex">
-                                <button type="submit" class="btn btn-primary ms-auto">Submit</button>
+                                <button id="check-form-submit" type="submit" class="btn btn-primary ms-auto" data-controller="check-form">Submit</button>
                             </div>
+
+                            <span id="alert_check_form_submit"></span>
                         </div>
                     </div>
                 </div>
@@ -146,8 +152,6 @@
 
         </div>
     </div>
-
-{# <a href="mailto:example@example.com?subject=Votre%20sujet&body=Votre%20message%20ici">Envoyer un email</a> #}
 
 <div {{ stimulus_controller('form_view') }}></div>
 

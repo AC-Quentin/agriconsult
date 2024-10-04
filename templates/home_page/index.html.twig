@@ -4,9 +4,9 @@
 
 {% block body %}
 
-  <div class="container-fluid">
+  <div class="container-fluid mb-4">
     <div class="row">
-      <div class="col-md-3 ps-0">
+      <div class="col-md-3 mt-3">
         {{ include('sidebar.html.twig') }}
       </div>
       <div class="col-md-8">
@@ -23,12 +23,11 @@
         <a href="{{ path ('app_demande_commerciale_stockage') }}" class="nav-link">
           <div class="card gr-1">
             <div class="txt">
-              <h1>NOUVEAU -</br>
-    STOCKAGE</h1>
+              <h1>NOUVEAU -</br> STOCKAGE</h1>
               <p>Demande commerciale pour une ou plusieurs cellules de stockage</p>
             </div>
             <div class="ico-card">
-            <i><img src="imgs/stockage.png" alt="logo" height="200"></i>
+            <i><img src="{{ asset('imgs/stockage.png') }}" alt="logo" height="200"></i>
           </div>
           </div>
         </a>
@@ -38,12 +37,11 @@
           <a href="{{ path ('app_demande_commerciale_secheuse') }}" class="nav-link">
             <div class="card gr-2">
               <div class="txt">
-                <h1>NOUVELLE -</br>
-        SECHEUSE</h1>
+                <h1>NOUVELLE -</br> SECHEUSE</h1>
                 <p>Demande commerciale pour une cellule Sécheuse</p>
               </div>
             <div class="ico-card">
-              <i><img src="imgs/secheuse.png" alt="logo" height="200"></i>
+              <i><img src="{{ asset('imgs/secheuse.png') }}" alt="logo" height="200"></i>
             </div>
             </div>
           </a>
@@ -52,23 +50,129 @@
         <div class="col-md-6 col-lg-4 column">
           <div class="card gr-3">
             <div class="txt">
-              <h1>NOUVEL ENSEMBLE - </br>
-    PERSONNALISÉ</h1>
-              <p>Ensemble à personnalisé stockage, séchage, manutention, ...</p>
+              <h1>NOUVEL ENSEMBLE - </br> STOCKAGE-SECHEUSE</h1>
+              <p>Ensemble stockage, séchage, Vis fixe/mobile</p>
             </div>
-          <div class="ico-card">
-            <i><img src="imgs/silo.png" alt="logo" height="200"></i>
-          </div>
+            <div class="ico-card">
+              <i><img src="{{ asset('imgs/silo.png') }}" alt="logo" height="200"></i>
+            </div>
           </div>
         </div>
         
+      </div>
+      <div class="row align-middle">
+        
+        <div class="col-12 column">
+          <a href="#" class="nav-link">
+            <div class="card gr-4">
+              <div class="txt">
+                <h1>NOUVEL ENSEMBLE - </br> Personnalisé</h1>
+                <p>Ensemble stockage, séchage, manutention, ...</p>
+              </div>
+              <div class="ico-card">
+                <i><img src="{{ asset('imgs/personnalise.png') }}" alt="logo" height="270"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+
       </div>
     </div>
 
   {% endif %}
         </div>
+  
+
     </div>
   </div>
+
+
+ {% if task_in_progress is not empty %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="color: #F75E1E; font-size: 0.9em;"># Nom de la tâche</th>
+                <th style="color: #F75E1E; font-size: 0.9em;">Dpt</th>
+                <th style="color: #F75E1E; font-size: 0.9em;">Responsable</th>
+                <th style="color: #F75E1E; font-size: 0.9em;">Type de projet</th>
+                <th style="color: #F75E1E; font-size: 0.9em;">Echéance</th>
+                <th style="color: #F75E1E; font-size: 0.9em;">Priorité</th>
+                <th style="color: #F75E1E; font-size: 0.9em;">Progression</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in task_in_progress %}
+                <tr {% if task.completed %}class="table-success"{% endif %}>
+                    <td class="small text-muted">{{ task.name }}</td>
+                    <td class="small text-muted">
+                        {% set dptValue = '' %}
+                        {% for field in task.custom_fields %}
+                            {% if field.name == 'Dpt' and field.display_value is not empty %}
+                                {% set dptValue = field.display_value %}
+                            {% endif %}
+                        {% endfor %}
+                        {{ dptValue }}
+                    </td>
+                    <td class="small text-muted">
+                        {% if task.assignee is defined %}
+                            {{ task.assignee.name }}
+                        {% else %}
+                            Aucun responsable
+                        {% endif %}
+                    </td>
+                    <td class="small text-muted">
+                        {% set typeProjetValue = '' %}
+                        {% for field in task.custom_fields %}
+                            {% if field.name == 'Type Projet' and field.display_value is not empty %}
+                                {% set typeProjetValue = field.display_value %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if typeProjetValue is not empty %}
+                            <span class="badge rounded-pill bg-danger">{{ typeProjetValue }}</span>
+                        {% else %}
+                            Aucun type de projet
+                        {% endif %}
+                    </td>
+                    <td class="small text-muted">
+                        {% set dueDateValue = task.due_on ? task.due_on|date('d-m-Y') : 'Aucune échéance' %}
+                        <span class="badge rounded-pill bg-info">{{ dueDateValue }}</span>
+                    </td>
+                    <td class="small text-muted">
+                        {% set priorityValue = '' %}
+                        {% for field in task.custom_fields %}
+                            {% if field.name == 'Priorité' and field.enum_value is not empty %}
+                                {% set priorityValue = field.enum_value.name %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if priorityValue is not empty %}
+                            <span class="badge rounded-pill bg-warning">{{ priorityValue }}</span>
+                        {% else %}
+                            <span class="badge rounded-pill bg-warning">Aucune priorité</span>
+                        {% endif %}
+                    </td>
+                    <td class="small text-muted">
+                        {% set progressionValue = '' %}
+                        {% for field in task.custom_fields %}
+                            {% if field.name == '📈 Progression' and field.display_value is not empty %}
+                                {% set progressionValue = field.display_value %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if progressionValue is not empty %}
+                            <span class="badge rounded-pill bg-primary">{{ progressionValue }}</span>
+                        {% else %}
+                            <span class="badge rounded-pill bg-primary">Aucune progression</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        Aucune tâche en cours à afficher.
+    </div>
+{% endif %}
+
 
   {% if app.request.query.get('mailto') is not null %}
       <script type="text/javascript">
@@ -78,6 +182,7 @@
           // Lance automatiquement le téléchargement du PDF
           window.location.href = "{{ path('telecharger_pdf') }}";
       </script>
+
   {% endif %}
 
 {% endblock %}

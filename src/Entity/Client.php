@@ -22,6 +22,9 @@ class Client
     private ?string $raison_sociale = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nom_prenom = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -75,6 +78,18 @@ class Client
     public function setRaisonSociale(?string $raison_sociale): static
     {
         $this->raison_sociale = $raison_sociale;
+
+        return $this;
+    }
+
+    public function getNomPrenom(): ?string
+    {
+        return $this->nom_prenom;
+    }
+
+    public function setNomPrenom(?string $nom_prenom): static
+    {
+        $this->nom_prenom = $nom_prenom;
 
         return $this;
     }

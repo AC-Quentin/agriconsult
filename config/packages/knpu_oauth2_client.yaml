@@ -1,0 +1,14 @@
+# config/packages/knpu_oauth2_client.yaml
+
+knpu_oauth2_client:
+    clients:
+        asana:
+            type: generic  # Ou "oauth2" selon le cas
+            client_id: '%env(ASANA_CLIENT_ID)%'
+            client_secret: '%env(ASANA_CLIENT_SECRET)%'
+            redirect_route: 'app_asana_callback'
+            provider_class: 'SumaerJolly\OAuth2\Client\Provider\Asana'  # Utilisez la classe du fournisseur d'Asana
+            provider_options:
+                urlAuthorize: 'https://app.asana.com/-/oauth_authorize'
+                urlAccessToken: 'https://app.asana.com/-/oauth_token'
+                urlResourceOwnerDetails: 'https://app.asana.com/api/1.0/users/me'

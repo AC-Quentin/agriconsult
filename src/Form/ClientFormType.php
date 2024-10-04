@@ -21,7 +21,10 @@ class ClientFormType extends AbstractType
                 'label' => 'raison_sociale',
                 'required' => false,
             ])
-            /*
+            ->add('nom_prenom', TextType::class, [
+                'label' => 'nom',
+                'required' => false,
+            ])
             ->add('adresse', TextType::class, [
                 'label' => 'adresse',
                 'required' => false,
@@ -46,7 +49,7 @@ class ClientFormType extends AbstractType
                 'label' => 'email',
                 'required' => false,
             ])
-            */
+
         ;
     }
 

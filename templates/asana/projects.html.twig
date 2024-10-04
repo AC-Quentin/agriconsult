@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AsanaController!{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des projets Asana</h1>
+
+    <ul>
+        {% if projects is not empty %}
+            <ul>
+                {% for project in projects %}
+                    <li>{{ project.name }} (ID: {{ project.gid }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun projet trouvé.</p>
+        {% endif %}
+    </ul>
+    
+{% endblock %}
