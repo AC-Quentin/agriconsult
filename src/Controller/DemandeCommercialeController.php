@@ -145,6 +145,7 @@ class DemandeCommercialeController extends AbstractController
                 'demandeCommerciale' => $demandeCommerciale,
                 'secheuse' => $secheuseData,
                 'client' => $client,
+                'clientData' => $clientData,
                 'user' => $user,
                 'options' => $options,
                 'visMobile' => $visMobile,
@@ -165,14 +166,17 @@ class DemandeCommercialeController extends AbstractController
             $sujet = $client->getIdClient().' - '.$client->getRaisonSociale();
             $corps = "Votre demande pour une {$type_demande} a bien été enregistrée.\n\n"
                 ."ID Client : {$client->getIdClient()}\n"
-                ."Raison Sociale : {$client->getRaisonSociale()}";
+                ."Raison Sociale : {$client->getRaisonSociale()}\n"
+                ."Nom Prénom : {$clientData->getNomPrenom()}\n"
+                ."Code Postal : {$clientData->getCodePostal()}\n"
+                .'Délais souhaité : ';
 
             // Encode les paramètres pour l'URL
             $sujetEncode = rawurlencode($sujet);
             $corpsEncode = rawurlencode($corps);
 
             // Crée le lien mailto
-            $mailtoLink = "mailto:{$destinataire}?subject={$sujetEncode}&body={$corpsEncode}";
+            $mailtoLink = "mailto:{$destinataire}?subject={$sujetEncode}?body={$corpsEncode}";
 
             // Redirige vers le lien mailto
 

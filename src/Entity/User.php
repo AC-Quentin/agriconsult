@@ -36,6 +36,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $username = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $asanaAccessToken = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $asanaRefreshToken = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $asanaTokenExpiresAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $asanaGid = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,5 +138,53 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->username;
+    }
+
+    public function getAsanaAccessToken(): ?string
+    {
+        return $this->asanaAccessToken;
+    }
+
+    public function setAsanaAccessToken(?string $asanaAccessToken): self
+    {
+        $this->asanaAccessToken = $asanaAccessToken;
+
+        return $this;
+    }
+
+    public function getAsanaRefreshToken(): ?string
+    {
+        return $this->asanaRefreshToken;
+    }
+
+    public function setAsanaRefreshToken(?string $asanaRefreshToken): self
+    {
+        $this->asanaRefreshToken = $asanaRefreshToken;
+
+        return $this;
+    }
+
+    public function getAsanaTokenExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->asanaTokenExpiresAt;
+    }
+
+    public function setAsanaTokenExpiresAt(?\DateTimeInterface $asanaTokenExpiresAt): self
+    {
+        $this->asanaTokenExpiresAt = $asanaTokenExpiresAt;
+
+        return $this;
+    }
+
+    public function getAsanaGid(): ?string
+    {
+        return $this->asanaGid;
+    }
+
+    public function setAsanaGid(?string $asanaGid): self
+    {
+        $this->asanaGid = $asanaGid;
+
+        return $this;
     }
 }

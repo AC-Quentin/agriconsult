@@ -3,3 +3,15 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+connect_asana:
+    path: /connect/asana
+    controller: App\Controller\AsanaController::connectAsana
+
+connect_asana_check:
+    path: /connect/asana/callback
+    controller: App\Controller\AsanaController::connectAsanaCheck
+
+asana_projects:
+    path: /asana/projects
+    controller: App\Controller\AsanaController::getProjects

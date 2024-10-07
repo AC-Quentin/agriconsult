@@ -56,6 +56,56 @@ export default class extends Controller {
                         secheuseResumeRaisonSocialeSpan.textContent = secheuseRaisonSocialeInput.value;
                     });
 
+                    var secheuseNomPrenomInput = document.getElementById('demande_commerciale_form_client_nom_prenom');
+                    var secheuseResumeNomPrenomSpan = document.getElementById('preview-nom-prenom');
+
+                    secheuseNomPrenomInput.addEventListener('input', function() {
+                        secheuseResumeNomPrenomSpan.textContent = secheuseNomPrenomInput.value;
+                    });
+
+                    var secheuseAdresseInput = document.getElementById('demande_commerciale_form_client_adresse');
+                    var secheuseResumeAdresseSpan = document.getElementById('preview-adresse');
+
+                    secheuseAdresseInput.addEventListener('input', function() {
+                        secheuseResumeAdresseSpan.textContent = secheuseAdresseInput.value;
+                    });
+
+                    var secheuseCodePostalInput = document.getElementById('demande_commerciale_form_client_code_postal');
+                    var secheuseResumeCodePostalSpan = document.getElementById('preview-code-postal');
+
+                    secheuseCodePostalInput.addEventListener('input', function() {
+                        secheuseResumeCodePostalSpan.textContent = secheuseAdresseInput.value;
+                    });
+
+                    var secheuseVilleInput = document.getElementById('demande_commerciale_form_client_ville');
+                    var secheuseResumeVilleSpan = document.getElementById('preview-ville');
+
+                    secheuseVilleInput.addEventListener('input', function() {
+                        secheuseResumeVilleSpan.textContent = secheuseVilleInput.value;
+                    });
+
+                    var secheuseEmailInput = document.getElementById('demande_commerciale_form_client_email');
+                    var secheuseResumeEmailSpan = document.getElementById('preview-email');
+
+                    secheuseEmailInput.addEventListener('input', function() {
+                        secheuseResumeEmailSpan.textContent = secheuseEmailInput.value;
+                    });
+
+                    var secheuseTelephoneInput = document.getElementById('demande_commerciale_form_client_telephone');
+                    var secheuseResumeTelephoneSpan = document.getElementById('preview-telephone');
+
+                    secheuseTelephoneInput.addEventListener('input', function() {
+                        secheuseResumeTelephoneSpan.textContent = secheuseTelephoneInput.value;
+                    });
+
+                    var secheuseMobileInput = document.getElementById('demande_commerciale_form_client_mobile');
+                    var secheuseResumeMobileSpan = document.getElementById('preview-mobile');
+
+                    secheuseMobileInput.addEventListener('input', function() {
+                        secheuseResumeMobileSpan.textContent = secheuseMobileInput.value;
+                    });
+                        
+
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -366,9 +416,6 @@ export default class extends Controller {
                 });
 
         //----------------------------------------------------------------------------------------------------------------------------
-            var formulaire = document.getElementById('monFormulaire');
-            var boutonReset = document.getElementById('bouton-reset'); // Assurez-vous d'avoir un bouton reset dans votre HTML
-            boutonReset.addEventListener('click', formulaire.reset());
         };
 }
 

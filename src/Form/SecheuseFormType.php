@@ -49,6 +49,13 @@ class SecheuseFormType extends AbstractType
             '30CV' => '30',
         ];
 
+        $collection_biomasse = [
+            'GDS580' => 'GDS 580',
+            'GDS720' => 'GDS 720',
+            'GDS1100' => 'GDS 1100',
+            'GDS1280' => 'GDS 1280',
+        ];
+
         $collection_gaz = [
             'PROPANE' => 'PROPANE',
             'GAZ NATUREL' => 'GAZ NATUREL',
@@ -101,9 +108,10 @@ class SecheuseFormType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
             ])
-            ->add('BIOMASSE', TextType::class, [
-                'label' => 'Type Biomasse',
-                'required' => false,
+            ->add('BIOMASSE', ChoiceType::class, [
+                'choices' => $collection_biomasse,
+                'multiple' => false,
+                'expanded' => true,
             ])
             ->add('VIS_BRASSAGE', ChoiceType::class, [
                 'choices' => $collection_oui_non,
