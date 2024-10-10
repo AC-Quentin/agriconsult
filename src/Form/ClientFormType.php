@@ -49,6 +49,21 @@ class ClientFormType extends AbstractType
                 'label' => 'email',
                 'required' => false,
             ])
+            ->add('adresse_site', TextType::class, [
+                'label' => 'adresse_site',
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->add('code_postal_site', TextType::class, [
+                'label' => 'code_postal_site',
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->add('ville_site', TextType::class, [
+                'label' => 'ville_site',
+                'required' => false,
+                'mapped' => false,
+            ])
 
         ;
     }

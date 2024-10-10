@@ -1,23 +1,7 @@
-
-reload();
-document.addEventListener('DOMContentLoaded', function() {
-
-alert('test')
-
-    const container = document.querySelector('.card-body'); // Sélectionner le conteneur principal
-    const fields = Array.from(container.querySelectorAll('.mb-3.hidden')); // Sélectionner les divs avec les classes .mb-3.hidden
-
-    function showNextField() {
-        const nextField = fields.shift();
-        if (nextField) {
-            nextField.classList.remove('hidden');
-        }
-    }
-
-    container.addEventListener('input', function(event) {
-        if (fields.length > 0) {
-            showNextField();
-        }
-    });
-
+document.getElementById('SiteClient').addEventListener('show.bs.modal', function () {
+    // Empêcher la fermeture du premier modal
+    var modalClient = document.getElementById('ModalClient');
+    var backdrop = document.querySelector('.modal-backdrop');
+    modalClient.style.zIndex = '1040'; // Le z-index du modal parent doit être inférieur à celui du modal enfant
+    backdrop.style.zIndex = '1039'; // Ajustement du backdrop
 });

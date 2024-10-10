@@ -109,7 +109,7 @@ class AsanaService
         }
     }
 
-    public function getAsanaUserTask(string $accessToken, string $userGid): string
+    public function getAsanaUserTask(string $accessToken): string
     {
         $workspaceGid = $_ENV['ASANA_WORKSPACE_GID'];
 
@@ -117,14 +117,15 @@ class AsanaService
             // Requête pour obtenir les tâches de l'utilisateur
             $response = $this->httpClient->request(
                 'GET',
-                'https://app.asana.com/api/1.0/users/'.$userGid.'/user_task_list',
+                'https://app.asana.com/api/1.0/workspaces/'.$workspaceGid.'/tasks/search',
                 [
                     'headers' => [
                         'Accept' => 'application/json',
                         'Authorization' => sprintf('Bearer %s', $accessToken),
                     ],
                     'query' => [
-                        'workspace' => $workspaceGid,
+                        'assignee.any' => 'me',
+                        'completed' => 'false',
                     ],
                 ]
             );
@@ -132,7 +133,7 @@ class AsanaService
             $data = $response->toArray();
 
             if (isset($data['data'])) {
-                return $data['data']['gid'];
+                return $data['data'];
             } else {
                 return ''; // Retournez une chaîne vide si aucune donnée
             }
@@ -142,39 +143,9 @@ class AsanaService
     }
 
     /**
-     * @return array<array<string, mixed>>
-     */
-    public function getAsanaTaskFromUserList(string $accessToken, string $taskUserListGid): array
-    {
-        try {
-            // Requête pour obtenir les tâches de l'utilisateur
-            $response = $this->httpClient->request(
-                'GET',
-                'https://app.asana.com/api/1.0/user_task_lists/'.$taskUserListGid.'/tasks',
-                [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Authorization' => sprintf('Bearer %s', $accessToken),
-                    ],
-                ]
-            );
-
-            $data = $response->toArray();
-
-            if (isset($data['data'])) {
-                return $data['data']; // Retourne les tâches
-            } else {
-                return []; // Retourne un tableau vide
-            }
-        } catch (\Exception $e) {
-            throw new \Exception('Erreur lors de la récupération des tâches : '.$e->getMessage());
-        }
-    }
-
-    /**
-     * @param array<array<string, mixed>> $taskList
+     * @param array<int, mixed> $taskList
      *
-     * @return array<array<string, mixed>>
+     * @return array<int<0, max>, mixed>
      */
     public function getAsanaTaskInProgress(string $accessToken, array $taskList): array
     {
@@ -201,6 +172,101 @@ class AsanaService
             }
 
             return $taskInProgress;
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la récupération des tâches : '.$e->getMessage());
+        }
+    }
+
+    public function getAsanaProjectsCommerciale(string $accessToken, User $user): string
+    {
+        $workspaceGid = $_ENV['ASANA_WORKSPACE_GID'];
+        $projectGid = '';
+
+        try {
+            // Requête pour obtenir les tâches du projet
+            $response = $this->httpClient->request(
+                'GET',
+                'https://app.asana.com/api/1.0/users/me',
+                [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Authorization' => sprintf('Bearer %s', $accessToken),
+                    ],
+                ]
+            );
+
+            $data = $response->toArray();
+
+            if (isset($data['data'])) {
+                $name = $data['data']['name'];
+
+                // Séparer la chaîne par les espaces
+                $firstName = explode(' ', $name);
+
+                // Récupérer le premier mot
+                $name = 'Emmanuel';
+            } else {
+                return ''; // Retournez une chaîne vide si aucune donnée
+            }
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la récupération des tâches : '.$e->getMessage());
+        }
+
+        try {
+            // Requête pour obtenir les projets
+            $response = $this->httpClient->request(
+                'GET',
+                'https://app.asana.com/api/1.0/projects',
+                [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Authorization' => sprintf('Bearer %s', $accessToken),
+                    ],
+                    'query' => [
+                        'opt_fields' => 'gid, name',
+                    ],
+                ]
+            );
+
+            $data = $response->toArray();
+
+            if (isset($data['data'])) {
+                foreach ($data['data'] as $project) {
+                    if ($project['name'] == $name) {
+                        $projectGid = $project['gid'];
+                    }
+                }
+            } else {
+                return ''; // Retournez une chaîne vide si aucune donnée
+            }
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la récupération des tâches : '.$e->getMessage());
+        }
+
+        try {
+            // Requête pour obtenir les tâches du projet
+            $response = $this->httpClient->request(
+                'GET',
+                'https://app.asana.com/api/1.0/workspaces/'.$workspaceGid.'/tasks/search',
+                [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Authorization' => sprintf('Bearer %s', $accessToken),
+                    ],
+                    'query' => [
+                        'projects.any' => $projectGid,
+                        'completed' => 'false',
+                    ],
+                ]
+            );
+
+            $data = $response->toArray();
+
+            if (isset($data['data'])) {
+                return $data['data'];
+            } else {
+                return ''; // Retournez une chaîne vide si aucune donnée
+            }
         } catch (\Exception $e) {
             throw new \Exception('Erreur lors de la récupération des tâches : '.$e->getMessage());
         }

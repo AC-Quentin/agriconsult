@@ -74,7 +74,7 @@ export default class extends Controller {
                     var secheuseResumeCodePostalSpan = document.getElementById('preview-code-postal');
 
                     secheuseCodePostalInput.addEventListener('input', function() {
-                        secheuseResumeCodePostalSpan.textContent = secheuseAdresseInput.value;
+                        secheuseResumeCodePostalSpan.textContent = secheuseCodePostalInput.value;
                     });
 
                     var secheuseVilleInput = document.getElementById('demande_commerciale_form_client_ville');
@@ -103,6 +103,27 @@ export default class extends Controller {
 
                     secheuseMobileInput.addEventListener('input', function() {
                         secheuseResumeMobileSpan.textContent = secheuseMobileInput.value;
+                    });
+
+                    var secheuseAdresseSiteInput = document.getElementById('demande_commerciale_form_client_adresse_site');
+                    var secheuseResumeAdresseSiteSpan = document.getElementById('preview-adresse-site');
+
+                    secheuseAdresseSiteInput.addEventListener('input', function() {
+                        secheuseResumeAdresseSiteSpan.textContent = secheuseAdresseSiteInput.value;
+                    });
+
+                    var secheuseCodePostalSiteInput = document.getElementById('demande_commerciale_form_client_code_postal_site');
+                    var secheuseResumeCodePostalSiteSpan = document.getElementById('preview-code-postal-site');
+
+                    secheuseCodePostalSiteInput.addEventListener('input', function() {
+                        secheuseResumeCodePostalSiteSpan.textContent = secheuseCodePostalSiteInput.value;
+                    });
+
+                    var secheuseVilleSiteInput = document.getElementById('demande_commerciale_form_client_ville_site');
+                    var secheuseResumeVilleSiteSpan = document.getElementById('preview-ville-site');
+
+                    secheuseVilleSiteInput.addEventListener('input', function() {
+                        secheuseResumeVilleSiteSpan.textContent = secheuseVilleSiteInput.value;
                     });
                         
 
@@ -258,7 +279,7 @@ export default class extends Controller {
 
         secheuseModule.addEventListener('click', function() {
             secheuseModuleActif.textContent = '';
-            secheuseResetBiomasseValue.value = '';
+            //secheuseResetBiomasseValue.textContent = '';
         });
 
         var secheuseBiomasse = document.getElementById('TXT_BIOMASSE');
@@ -374,7 +395,7 @@ export default class extends Controller {
                 // Fonction pour vérifier si un champ est rempli
                 function checkFormVisMobile() {
                 let isFormVisMobileFilled = false;
-        
+                
                 secheuseVisMobileInputs.forEach(function(field) {
                     
                     if (field.type === 'radio' || field.type === 'checkbox') {
@@ -391,6 +412,7 @@ export default class extends Controller {
                 // Si au moins un champ est rempli, enlever la classe "hidden"
                 if (isFormVisMobileFilled) {
                     secheuseResumeVisMobile.classList.remove('hidden');
+                    console.log('ok');
                 } else {
                     secheuseResumeVisMobile.classList.add('hidden');
                 }
@@ -399,7 +421,7 @@ export default class extends Controller {
             // Ajouter des écouteurs d'événements sur chaque champ
             secheuseVisMobileInputs.forEach(function(field) {
                 field.addEventListener('input', checkFormVisMobile);
-                field.addEventListener('change', checkFormVisMobile);
+                field.addEventListener('click', checkFormVisMobile);
             });
         
             // ACTIONS SUIVANT LE CHANGEMENT DE VALEUR DES INPUTS
@@ -409,9 +431,33 @@ export default class extends Controller {
         
                 // Boucle sur tous les éléments récupérés par querySelectorAll
                 secheuseOptionVisMobile.forEach(function(option) {
-                    option.addEventListener('change', function() {
+                    option.addEventListener('click', function() {
                         // Met à jour le texte lorsque la valeur change
                         secheuseResumeOptionVisMobile.textContent = this.value;
+                    });
+                });
+
+            // SORTIE ORIENTABLE
+            var secheuseOptionVisMobileSortieOrientable = document.querySelectorAll('select[name="demande_commerciale_form[secheuse][SORTIE_ORIENTABLE]"]');
+            var secheuseResumeOptionVisMobileSortieOrientable = document.getElementById('preview-sortie-orientable');
+        
+                // Boucle sur tous les éléments récupérés par querySelectorAll
+                secheuseOptionVisMobileSortieOrientable.forEach(function(option) {
+                    option.addEventListener('change', function() {
+                        // Met à jour le texte lorsque la valeur change
+                        secheuseResumeOptionVisMobileSortieOrientable.textContent = this.value;
+                    });
+                });
+            
+            // BAC
+            var secheuseOptionVisMobileBac = document.querySelectorAll('select[name="demande_commerciale_form[secheuse][BAC]"]');
+            var secheuseResumeOptionVisMobileBac = document.getElementById('preview-bac');
+        
+                // Boucle sur tous les éléments récupérés par querySelectorAll
+                secheuseOptionVisMobileBac.forEach(function(option) {
+                    option.addEventListener('change', function() {
+                        // Met à jour le texte lorsque la valeur change
+                        secheuseResumeOptionVisMobileBac.textContent = this.value;
                     });
                 });
 

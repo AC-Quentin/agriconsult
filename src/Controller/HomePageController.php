@@ -29,6 +29,7 @@ class HomePageController extends AbstractController
         if ($user instanceof User) {
             // Utiliser le service pour gérer la connexion à Asana
             if ($accessToken = $user->getAsanaAccessToken()) {
+                $checkAsana = $this->asanaService->connectAsana($user);
             }
 
             if (!$accessToken) {
@@ -39,15 +40,24 @@ class HomePageController extends AbstractController
                 }
                 // Vérifiez si les tâches en cours sont déjà stockées dans la session
                 $taskInProgress = $sessionAsana->get('task_in_progress');
+                $projectInProgress = $sessionAsana->get('project_in_progress');
 
                 if (null === $taskInProgress) {
-                    // Les tâches ne sont pas en session, récupérez-les depuis Asana
-                    $get_user_task_list_gid = $this->asanaService->getAsanaUserTask($user->getAsanaAccessToken(), $user->getAsanaGid());
-                    $task_from_user_list = $this->asanaService->getAsanaTaskFromUserList($user->getAsanaAccessToken(), $get_user_task_list_gid);
-                    $taskInProgress = $this->asanaService->getAsanaTaskInProgress($user->getAsanaAccessToken(), $task_from_user_list);
+                    if (in_array('ROLE_COMMERCIALE', $user->getRoles())) {
+                        $projetCommerciale = $this->asanaService->getAsanaProjectsCommerciale($user->getAsanaAccessToken(), $user);
+                        $projectInProgress = $this->asanaService->getAsanaTaskInProgress($user->getAsanaAccessToken(), (array) $projetCommerciale);
 
-                    // Stockez les tâches en session pour une utilisation future
-                    $sessionAsana->set('task_in_progress', $taskInProgress);
+                        // Stockez les tâches en session pour une utilisation future
+                        $sessionAsana->set('project_in_progress', $projectInProgress);
+                    }
+
+                    if (in_array('ROLE_USER', $user->getRoles()) || in_array('ROLE_ADMIN', $user->getRoles())) {
+                        $get_user_task_list_gid = $this->asanaService->getAsanaUserTask($user->getAsanaAccessToken());
+                        $taskInProgress = $this->asanaService->getAsanaTaskInProgress($user->getAsanaAccessToken(), (array) $get_user_task_list_gid);
+
+                        // Stockez les tâches en session pour une utilisation future
+                        $sessionAsana->set('task_in_progress', $taskInProgress);
+                    }
                 }
             }
         }
@@ -55,6 +65,7 @@ class HomePageController extends AbstractController
         return $this->render('home_page/index.html.twig', [
             'controller_name' => 'HomePageController',
             'task_in_progress' => $taskInProgress,
+            'project_in_progress' => $projectInProgress,
         ]);
     }
 

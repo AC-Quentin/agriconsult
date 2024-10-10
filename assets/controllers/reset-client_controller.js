@@ -49,9 +49,10 @@ export default class extends Controller {
                 if (previewElement) {
                     previewElement.innerHTML = "";
                 }
-            });
 
-            console.log("Client form has been reset.");
+                const previewElementParent = document.getElementById('preview-client');
+                previewElementParent.classList.add('hidden');
+            });
     };
 
     

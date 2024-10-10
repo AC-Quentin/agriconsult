@@ -86,91 +86,454 @@
     </div>
   </div>
 
-
+{% if is_granted('ROLE_ADMIN') %}
  {% if task_in_progress is not empty %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th style="color: #F75E1E; font-size: 0.9em;"># Nom de la tâche</th>
-                <th style="color: #F75E1E; font-size: 0.9em;">Dpt</th>
-                <th style="color: #F75E1E; font-size: 0.9em;">Responsable</th>
-                <th style="color: #F75E1E; font-size: 0.9em;">Type de projet</th>
-                <th style="color: #F75E1E; font-size: 0.9em;">Echéance</th>
-                <th style="color: #F75E1E; font-size: 0.9em;">Priorité</th>
-                <th style="color: #F75E1E; font-size: 0.9em;">Progression</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in task_in_progress %}
-                <tr {% if task.completed %}class="table-success"{% endif %}>
-                    <td class="small text-muted">{{ task.name }}</td>
-                    <td class="small text-muted">
-                        {% set dptValue = '' %}
-                        {% for field in task.custom_fields %}
-                            {% if field.name == 'Dpt' and field.display_value is not empty %}
-                                {% set dptValue = field.display_value %}
-                            {% endif %}
-                        {% endfor %}
-                        {{ dptValue }}
-                    </td>
-                    <td class="small text-muted">
-                        {% if task.assignee is defined %}
-                            {{ task.assignee.name }}
-                        {% else %}
-                            Aucun responsable
-                        {% endif %}
-                    </td>
-                    <td class="small text-muted">
-                        {% set typeProjetValue = '' %}
-                        {% for field in task.custom_fields %}
-                            {% if field.name == 'Type Projet' and field.display_value is not empty %}
-                                {% set typeProjetValue = field.display_value %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if typeProjetValue is not empty %}
-                            <span class="badge rounded-pill bg-danger">{{ typeProjetValue }}</span>
-                        {% else %}
-                            Aucun type de projet
-                        {% endif %}
-                    </td>
-                    <td class="small text-muted">
-                        {% set dueDateValue = task.due_on ? task.due_on|date('d-m-Y') : 'Aucune échéance' %}
-                        <span class="badge rounded-pill bg-info">{{ dueDateValue }}</span>
-                    </td>
-                    <td class="small text-muted">
-                        {% set priorityValue = '' %}
-                        {% for field in task.custom_fields %}
-                            {% if field.name == 'Priorité' and field.enum_value is not empty %}
-                                {% set priorityValue = field.enum_value.name %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if priorityValue is not empty %}
-                            <span class="badge rounded-pill bg-warning">{{ priorityValue }}</span>
-                        {% else %}
-                            <span class="badge rounded-pill bg-warning">Aucune priorité</span>
-                        {% endif %}
-                    </td>
-                    <td class="small text-muted">
-                        {% set progressionValue = '' %}
-                        {% for field in task.custom_fields %}
-                            {% if field.name == '📈 Progression' and field.display_value is not empty %}
-                                {% set progressionValue = field.display_value %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if progressionValue is not empty %}
-                            <span class="badge rounded-pill bg-primary">{{ progressionValue }}</span>
-                        {% else %}
-                            <span class="badge rounded-pill bg-primary">Aucune progression</span>
-                        {% endif %}
-                    </td>
+     <div class="card mb-4">
+      <div class="card-header">
+        <h4 style="color: #F75E1E;">Tâches en cours</h4>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="color: #F75E1E; font-size: 0.9em;"># Nom de la tâche</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Dpt</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Responsable</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Type de projet</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Echéance</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Priorité</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Progression</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
+            </thead>
+            <tbody>
+
+                {% for task in task_in_progress %}
+                    <tr {% if task.completed %}class="table-success"{% endif %}>
+                        <td class="small text-muted">{{ task.name }}</td>
+                        <td class="small text-muted">
+                            {% set dptValue = '' %}
+                            {% for field in task.custom_fields %}
+                                {% if field.name == 'Dpt' and field.display_value is not empty %}
+                                    {% set dptValue = field.display_value %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ dptValue }}
+                        </td>
+                        <td class="small text-muted">
+                            {% if task.assignee is defined %}
+                                {{ task.assignee.name }}
+                            {% else %}
+                                Aucun responsable
+                            {% endif %}
+                        </td>
+                        <td class="small text-muted">
+                          {% set typeProjetValue = '' %}
+                          {% for field in task.custom_fields %}
+                              {% if field.name == 'Type Projet' and field.display_value is not empty %}
+                                  {% set typeProjetValue = field.display_value %}
+                              {% endif %}
+                          {% endfor %}
+                           {% if typeProjetValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if typeProjetValue == 'Standard' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Manutention' %}
+                                    {% set badgeClass = 'bg-danger' %}
+                                {% elseif typeProjetValue == 'Nettoyage' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif typeProjetValue == 'Séchage/Stockage' %}
+                                    {% set badgeClass = 'bg-secondary' %}
+                                {% elseif typeProjetValue == 'Plan' %}
+                                    {% set badgeClass = 'bg-primary' %}
+                                {% elseif typeProjetValue == 'Nettoyage/Stockage' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif typeProjetValue == 'Triage' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Stockage/Manutention' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Sécheuse/Manutention' %}
+                                    {% set badgeClass = 'bg-light' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+                              <span class="badge rounded-pill {{ badgeClass }}">{{ typeProjetValue }}</span>
+                          {% else %}
+                              Aucun type de projet
+                          {% endif %}
+                      </td>
+                        <td class="small text-muted">
+                            {% set dueDateValue = task.due_on ? task.due_on|date('d-m-Y') : 'Aucune échéance' %}
+                            <span class="small text-muted">{{ dueDateValue }}</span>
+                        </td>
+                        <td class="small text-muted">
+                          {% set priorityValue = '' %}
+                          {% for field in task.custom_fields %}
+                              {% if field.name == 'Priorité' and field.enum_value is not empty %}
+                                  {% set priorityValue = field.enum_value.name %}
+                              {% endif %}
+                          {% endfor %}
+
+                          {% if priorityValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if priorityValue == 'Élevée' %}
+                                    {% set badgeClass = 'bg-danger' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+
+                              <span class="badge rounded-pill {{ badgeClass }}">{{ priorityValue }}</span>
+                          {% else %}
+                              <span class="badge rounded-pill"></span>
+                          {% endif %}
+                      </td>
+                        <td class="small text-muted">
+                            {% set progressionValue = '' %}
+                            {% for field in task.custom_fields %}
+                                {% if field.name == '📈 Progression' and field.display_value is not empty %}
+                                    {% set progressionValue = field.display_value %}
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if progressionValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if progressionValue == 'En attente' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif progressionValue == 'Attente Electricité' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif progressionValue == 'Non Commencé' %}
+                                    {% set badgeClass = 'bg-info' %}
+                                {% elseif progressionValue == 'Terminé' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif progressionValue == 'En cours Méca' %}
+                                    {% set badgeClass = 'bg-secondary' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+                                
+                                <span class="badge rounded-pill {{ badgeClass }}">{{ progressionValue }}</span>
+                            {% else %}
+                                <span class="badge rounded-pill">Aucune progression</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
     <div class="alert alert-info" role="alert">
         Aucune tâche en cours à afficher.
     </div>
+  {% endif %}
+{% endif %}
+
+{% if is_granted('ROLE_COMMERCIALE') %}
+  {% if project_in_progress is not empty %}
+          <!-- En attente d'intégration -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 style="color: #F75E1E;">En attente d'intégration</h4>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="color: #F75E1E; font-size: 0.9em;"># Nom de la tâche</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Dpt</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Responsable</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Type de projet</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Echéance</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Priorité</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Progression</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in project_in_progress %}
+                    {% set inIntegration = false %}
+                    {% for membership in task.memberships %}
+                    {% for section in membership %}
+                        {% if section.name == 'En Attente d\'Intégration' %}
+                        {% set inIntegration = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+
+                    {% if inIntegration %}
+                        <tr {% if task.completed %}class="table-success"{% endif %}>
+                            <td class="small text-muted">{{ task.name }}</td>
+                            <td class="small text-muted">
+                              {% set dptValue = '' %}
+                              {% for field in task.custom_fields %}
+                                  {% if field.name == 'Dpt' and field.display_value is not empty %}
+                                      {% set dptValue = field.display_value %}
+                                  {% endif %}
+                              {% endfor %}
+                              {{ dptValue }}
+                            </td>
+                            <td class="small text-muted">
+                              {% if task.assignee is defined and task.assignee is not null %}
+                                  {{ task.assignee.name }}
+                              {% else %}
+                                  Aucun responsable
+                              {% endif %}
+                            </td>
+                        <td class="small text-muted">
+                          {% set typeProjetValue = '' %}
+                          {% for field in task.custom_fields %}
+                              {% if field.name == 'Type Projet' and field.display_value is not empty %}
+                                  {% set typeProjetValue = field.display_value %}
+                              {% endif %}
+                          {% endfor %}
+                           {% if typeProjetValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if typeProjetValue == 'Standard' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Manutention' %}
+                                    {% set badgeClass = 'bg-danger' %}
+                                {% elseif typeProjetValue == 'Nettoyage' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif typeProjetValue == 'Séchage/Stockage' %}
+                                    {% set badgeClass = 'bg-secondary' %}
+                                {% elseif typeProjetValue == 'Plan' %}
+                                    {% set badgeClass = 'bg-primary' %}
+                                {% elseif typeProjetValue == 'Nettoyage/Stockage' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif typeProjetValue == 'Triage' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Stockage/Manutention' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Sécheuse/Manutention' %}
+                                    {% set badgeClass = 'bg-light' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+                              <span class="badge rounded-pill {{ badgeClass }}">{{ typeProjetValue }}</span>
+                          {% else %}
+                              Aucun type de projet
+                          {% endif %}
+                      </td>
+                      <td class="small text-muted">
+                          {% set dueDateValue = task.due_on ? task.due_on|date('d-m-Y') : 'Aucune échéance' %}
+                          <span class="small text-muted">{{ dueDateValue }}</span>
+                      </td>
+                      <td class="small text-muted">
+                          {% set priorityValue = '' %}
+                          {% for field in task.custom_fields %}
+                              {% if field.name == 'Priorité' and field.enum_value is not empty %}
+                                  {% set priorityValue = field.enum_value.name %}
+                              {% endif %}
+                          {% endfor %}
+
+                          {% if priorityValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if priorityValue == 'Élevée' %}
+                                    {% set badgeClass = 'bg-danger' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+
+                              <span class="badge rounded-pill {{ badgeClass }}">{{ priorityValue }}</span>
+                          {% else %}
+                              <span class="badge rounded-pill"></span>
+                          {% endif %}
+                      </td>
+                        <td class="small text-muted">
+                            {% set progressionValue = '' %}
+                            {% for field in task.custom_fields %}
+                                {% if field.name == '📈 Progression' and field.display_value is not empty %}
+                                    {% set progressionValue = field.display_value %}
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if progressionValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if progressionValue == 'En attente' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif progressionValue == 'Attente Electricité' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif progressionValue == 'Non Commencé' %}
+                                    {% set badgeClass = 'bg-info' %}
+                                {% elseif progressionValue == 'Terminé' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif progressionValue == 'En cours Méca' %}
+                                    {% set badgeClass = 'bg-secondary' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+                                
+                                <span class="badge rounded-pill {{ badgeClass }}">{{ progressionValue }}</span>
+                            {% else %}
+                                <span class="badge rounded-pill">Aucune progression</span>
+                            {% endif %}
+                        </td>
+
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+          <!-- Devis en cours -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 style="color: #F75E1E;">Devis en cours</h4>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="color: #F75E1E; font-size: 0.9em;"># Nom de la tâche</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Dpt</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Responsable</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Type de projet</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Echéance</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Priorité</th>
+                    <th style="color: #F75E1E; font-size: 0.9em;">Progression</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in project_in_progress %}
+                    {% set inDevis = false %}
+                    {% for membership in task.memberships %}
+                    {% for section in membership %}
+                        {% if section.name == 'Devis en Cours' %}
+                            {% set inDevis = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+
+                    {% if inDevis %}
+                        <tr {% if task.completed %}class="table-success"{% endif %}>
+                            <td class="small text-muted">{{ task.name }}</td>
+                            <td class="small text-muted">
+                              {% set dptValue = '' %}
+                              {% for field in task.custom_fields %}
+                                  {% if field.name == 'Dpt' and field.display_value is not empty %}
+                                      {% set dptValue = field.display_value %}
+                                  {% endif %}
+                              {% endfor %}
+                              {{ dptValue }}
+                            </td>
+                            <td class="small text-muted">
+                              {% if task.assignee is defined and task.assignee is not null %}
+                                  {{ task.assignee.name }}
+                              {% else %}
+                                  Aucun responsable
+                              {% endif %}
+                            </td>
+                        <td class="small text-muted">
+                          {% set typeProjetValue = '' %}
+                          {% for field in task.custom_fields %}
+                              {% if field.name == 'Type Projet' and field.display_value is not empty %}
+                                  {% set typeProjetValue = field.display_value %}
+                              {% endif %}
+                          {% endfor %}
+                           {% if typeProjetValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if typeProjetValue == 'Standard' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Manutention' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif typeProjetValue == 'Nettoyage' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif typeProjetValue == 'Séchage/Stockage' %}
+                                    {% set badgeClass = 'bg-secondary' %}
+                                {% elseif typeProjetValue == 'Plan' %}
+                                    {% set badgeClass = 'bg-primary' %}
+                                {% elseif typeProjetValue == 'Nettoyage/Stockage' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif typeProjetValue == 'Triage' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Stockage/Manutention' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif typeProjetValue == 'Sécheuse/Manutention' %}
+                                    {% set badgeClass = 'bg-info' %}
+                                {% else %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% endif %}
+                              <span class="badge rounded-pill {{ badgeClass }}">{{ typeProjetValue }}</span>
+                          {% else %}
+                              Aucun type de projet
+                          {% endif %}
+                      </td>
+                      <td class="small text-muted">
+                          {% set dueDateValue = task.due_on ? task.due_on|date('d-m-Y') : 'Aucune échéance' %}
+                          <span class="small text-muted">{{ dueDateValue }}</span>
+                      </td>
+                      <td class="small text-muted">
+                          {% set priorityValue = '' %}
+                          {% for field in task.custom_fields %}
+                              {% if field.name == 'Priorité' and field.enum_value is not empty %}
+                                  {% set priorityValue = field.enum_value.name %}
+                              {% endif %}
+                          {% endfor %}
+
+                          {% if priorityValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if priorityValue == 'Élevée' %}
+                                    {% set badgeClass = 'bg-danger' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+
+                              <span class="badge rounded-pill {{ badgeClass }}">{{ priorityValue }}</span>
+                          {% else %}
+                              <span class="badge rounded-pill"></span>
+                          {% endif %}
+                      </td>
+                        <td class="small text-muted">
+                            {% set progressionValue = '' %}
+                            {% for field in task.custom_fields %}
+                                {% if field.name == '📈 Progression' and field.display_value is not empty %}
+                                    {% set progressionValue = field.display_value %}
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if progressionValue is not empty %}
+                                {# Ici, on change la couleur du badge en fonction de la valeur de progressionValue #}
+                                {% set badgeClass = '' %}
+                                {% if progressionValue == 'En attente' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif progressionValue == 'Attente Electricité' %}
+                                    {% set badgeClass = 'bg-warning' %}
+                                {% elseif progressionValue == 'Non Commencé' %}
+                                    {% set badgeClass = 'bg-primary' %}
+                                {% elseif progressionValue == 'Terminé' %}
+                                    {% set badgeClass = 'bg-success' %}
+                                {% elseif progressionValue == 'En cours Méca' %}
+                                    {% set badgeClass = 'bg-secondary' %}
+                                {% else %}
+                                    {% set badgeClass = '' %}
+                                {% endif %}
+                                
+                                <span class="badge rounded-pill {{ badgeClass }}">{{ progressionValue }}</span>
+                            {% else %}
+                                <span class="badge rounded-pill">Aucune progression</span>
+                            {% endif %}
+                        </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
+  {% else %}
+      <div class="alert alert-info" role="alert">
+          Aucune tâche en cours à afficher.
+      </div>
+  {% endif %}
 {% endif %}
 
 

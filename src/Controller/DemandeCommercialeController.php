@@ -10,12 +10,12 @@ use App\Form\DemandeCommercialeFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -139,6 +139,25 @@ class DemandeCommercialeController extends AbstractController
             $entityManager->persist($demandeCommerciale);
             $entityManager->flush();
 
+            // Gestion des fichiers uploadés
+            $files = $form->get('file')->getData(); // Récupérer les fichiers uploadés
+
+            if ($files) {
+                foreach ($files as $file) {
+                    // Vérifier que le fichier est valide
+                    if ($file instanceof UploadedFile) {
+                        // Définir un nom unique pour le fichier
+                        $fileName = uniqid().'.'.$file->guessExtension();
+                        $targetDirectory = $this->getParameter('uploads_directory');
+                        if (!is_string($targetDirectory)) {
+                            throw new \Exception('Le répertoire de destination doit être une chaîne de caractères.');
+                        }
+                        // Déplacer le fichier vers le répertoire de destination
+                        $file->move($targetDirectory, $fileName);
+                    }
+                }
+            }
+
             // Génération du PDF
             $html = $this->renderView('pdf/demande_commerciale.html.twig', [
                 'type_demande' => $type_demande,
@@ -177,23 +196,6 @@ class DemandeCommercialeController extends AbstractController
 
             // Crée le lien mailto
             $mailtoLink = "mailto:{$destinataire}?subject={$sujetEncode}?body={$corpsEncode}";
-
-            // Redirige vers le lien mailto
-
-            /* Envoi de l'email
-            $email = (new Email())
-                ->from($userEmail)
-                ->to('x+1190066889395939@mail.asana.com')
-                ->subject($client->getIdClient() & " - " & $client->getRaisonSociale())
-                ->text('Votre demande a bien été enregistrée.')
-                ->html('<p>Votre demande pour une '.$type_demande.' a bien été enregistrée.</p><br>
-                        <p>ID Client : '.$client->getIdClient().'</p><br>
-                        <p>Raison Sociale : '.$client->getRaisonSociale().'</p><br>')
-                ->attach($pdfContent, $pdfName, 'application/pdf');
-
-            // Envoi de l'email
-            $mailer->send($email);
-            */
 
             // Redirige vers la page d'accueil avec l'ID en paramètre
             $url = $urlGenerator->generate('app_home_page', [

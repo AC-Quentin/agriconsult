@@ -1,67 +1,144 @@
                     <div class="card shadow-lg">
-                        <div class="card-header">
+                        <div class="card-header bg-custom">
                             <h5>Preview</h5>
                         </div>
 
                         <div class="card-body hidden" id="preview-client">
-                            <div class="card mb-3" id="Client" style="max-height: 300px;">
+                            <div class="card mb-3" id="Client">
                                 <div class="row g-0">
-                                    <div class="col-md-3 d-flex align-items-center">
-                                    <img src="{{ asset('imgs/picto-client.svg') }}" class="img-fluid rounded-start" alt="...">
-                                    </div>
-                                    <div class="col-md-1 bg-info"  style="width:1em"></div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-1 bg-info" style="width:0.5em"></div>
+                                    <div class="col">
                                         <div class="card-header">
-                                            <h5 class="card-title  text-center">Client</h5>
+                                            <h5 class="card-title text-center"><img src="{{ asset('imgs/picto-client.svg') }}" style="height:40px;">Client</h5>
                                         </div>
                                         <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <p class="card-text">
-                                                    <strong>ID Client:</strong> <span id="preview-id-client"></span><br>
-                                                    <strong>Raison Sociale:</strong> <span id="preview-raison-sociale"></span><br>
-                                                    <strong>Nom Prénom:</strong> <span id="preview-nom-prenom"></span><br>
-                                                    <strong>Adresse:</strong> <span id="preview-adresse"></span><br>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p class="card-text">
-                                                    <strong>Code Postal:</strong> <span id="preview-code-postal"></span><br>
-                                                    <strong>Ville:</strong> <span id="preview-ville"></span><br>
-                                                    <strong>Email:</strong> <span id="preview-email"></span><br>
-                                                    <strong>Téléphone:</strong> <span id="preview-telephone"></span><br>
-                                                    <strong>Mobile:</strong> <span id="preview-mobile"></span><br>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            <div class="row">
+                                                    <div class="col">
+                                                        <table class="table table-sm">
+                                                            <thead>Client</thead>
+                                                            <tbody class="small">
+                                                                <tr class="table">
+                                                                    <td><strong>ID Client:</strong></td>
+                                                                    <td><span id="preview-id-client"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Raison Sociale:</strong></td>
+                                                                    <td><span id="preview-raison-sociale"></span></td>
+                                                                </tr>
+                                                                <tr class="table">
+                                                                    <td><strong>Nom Prénom:</strong></td>
+                                                                    <td><span id="preview-nom-prenom"></span></td>
+                                                                </tr>     
+                                                            </tbody>
+                                                        </table>
+                                                        <table class="table table-sm">
+                                                            <tbody class="small">
+                                                                <tr>
+                                                                    <td><strong>Adresse:</strong></td>
+                                                                    <td><span id="preview-adresse"></span></td>
+                                                                </tr>
+                                                                <tr class="table">
+                                                                    <td><strong>Code Postal:</strong></td>
+                                                                    <td><span id="preview-code-postal"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Ville:</strong></td>
+                                                                    <td><span id="preview-ville"></span></td>
+                                                                </tr>
+                                                                <tr class="table">
+                                                                    <td><strong>Email:</strong></td>
+                                                                    <td><span id="preview-email"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Téléphone:</strong></td>
+                                                                    <td><span id="preview-telephone"></span></td>
+                                                                </tr>
+                                                                <tr class="table">
+                                                                    <td><strong>Mobile:</strong></td>
+                                                                    <td><span id="preview-mobile"></span></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>   
+                                                    </div>
+                                                    <div class="col">
+                                                        <table class="table table-sm">
+                                                        <thead>Site Installation</thead>
+                                                            <tbody class="small">
+                                                                <tr class="table">
+                                                                    <td><strong>Adresse Site:</strong></td>
+                                                                    <td><span id="preview-adresse-site"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Code Postal:</strong></td>
+                                                                    <td><span id="preview-code-postal-site"></span></td>
+                                                                </tr>
+                                                                <tr class="table">
+                                                                    <td><strong>Ville:</strong></td>
+                                                                    <td><span id="preview-ville-site"></span></td>
+                                                                </tr>     
+                                                            </tbody>
+                                                        </table>
+                                                        
+                                                    </div>
+                                                </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        </div>
 
                         <div class="card-body hidden" id="preview-secheuse">
-                            <div class="card mb-3" id="Secheuse" style="max-height: 350px;">
+                            <div class="card mb-3" id="Secheuse">
                                 <div class="row g-0">
-                                    <div class="col-md-3 d-flex align-items-center">
-                                    <img src="{{ asset('imgs/secheuse/secheuse.jpg') }}" class="img-fluid rounded-start" alt="...">
+                                    <div class="col-sm-2 d-flex align-items-center">
+                                    <img src="{{ asset('imgs/secheuse/secheuse.jpg') }}" class="img-fluid">
                                     </div>
-                                    <div class="col-md-1 bg-warning"  style="width:1em"></div>
-                                    <div class="col-md-8">
+                                    <div class="col-sm-1 bg-warning" style="width:0.5em"></div>
+                                    <div class="col">
                                         <div class="card-header">
                                             <h5 class="card-title  text-center">Sécheuse</h5>
                                         </div>
                                         <div class="card-body">
-                                            <p class="card-text">
-                                                <strong>Quantité:</strong> <span id="preview-quantite"></span><br>
-                                                <strong>Type Secheuse:</strong> <span id="preview-type-secheuse"></span><br>
-                                                <strong>Type Plancher:</strong> <span id="preview-type-plancher"></span><br>
-                                                <strong>Type Reprise:</strong> <span id="preview-type-reprise"></span><br>
-                                                <strong>Débit Reprise:</strong> <span id="preview-debit-reprise"></span><br>
-                                                <strong>Type Module:</strong> <span id="preview-type-module"></span><br>
-                                                <strong>Gaz:</strong> <span id="preview-gaz"></span><br>
-                                                <strong>Biomasse:</strong> <span id="preview-biomasse"></span><br>
-                                            </p>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <table class="table table-sm">
+                                                        <tbody class="small">
+                                                            <tr class="table">
+                                                                <td><strong>Quantité:</strong></td>
+                                                                <td><span id="preview-quantite"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Type Secheuse:</strong></td>
+                                                                <td><span id="preview-type-secheuse"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Type Plancher:</strong></td>
+                                                                <td><span id="preview-type-plancher"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Type Reprise:</strong></td>
+                                                                <td><span id="preview-type-reprise"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Débit Reprise:</strong></td>
+                                                                <td><span id="preview-debit-reprise"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Type Module:</strong></td>
+                                                                <td><span id="preview-type-module"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Gaz:</strong></td>
+                                                                <td><span id="preview-gaz"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Biomasse:</strong></td>
+                                                                <td><span id="preview-biomasse"></span></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -69,23 +146,29 @@
                         </div>
 
                         <div class="card-body hidden" id="preview-options">
-                            <div class="card mb-3" id="Options" style="max-height: 300px;">
+                            <div class="card mb-3" id="Options">
                                 <div class="row g-0">
-                                    <div class="col-md-3 d-flex align-items-center">
-                                    <img src="{{ asset('imgs/picto-options.svg') }}" class="img-fluid rounded-start" alt="...">
+                                    <div class="col-sm-2 d-flex align-items-center">
+                                    <img src="{{ asset('imgs/picto-options.svg') }}" class="img-fluid">
                                     </div>
-                                    <div class="col-md-auto bg-primary" style="width:1em"></div>
-                                    <div class="col-md-8">
+                                    <div class="col-sm-auto bg-primary" style="width:0.5em"></div>
+                                    <div class="col">
                                         <div class="card-header">
                                             <h5 class="card-title  text-center">Options</h5>
                                         </div>
                                         <div class="card-body">
-                                            <p class="card-text">
-                                                <strong>Vis Brassage supp:</strong> <span id="preview-vis-brassage"></span><br>
-                                                <strong>Pré-néttoyeur:</strong> <span id="preview-prenettoyeur"></span><br>
-                                                <strong>B2D:</strong> <span id="preview-b2d"></span><br>
-                                                <strong>Debit vis:</strong> <span id="preview-debit-vis"></span><br>
-                                            </p>
+                                            <table class="table table-sm">
+                                                <tbody class="small">
+                                                    <tr class="table">
+                                                        <td><strong>Vis Brassage supp:</strong></td>
+                                                        <td> <span id="preview-vis-brassage"></span></td>
+                                                    </tr>
+                                                    <tr class="table">
+                                                        <td><strong>Pré-néttoyeur:</strong></td>
+                                                        <td><span id="preview-prenettoyeur"></span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -93,28 +176,38 @@
                         </div>
 
                         <div class="card-body hidden" id="preview-card-vis-mobile">
-                            <div class="card mb-3" id="VisMobile" style="max-height: 300px;">
+                            <div class="card mb-3" id="VisMobile">
                                 <div class="row g-0">
-                                    <div class="col-md-3 d-flex align-items-center">
-                                        <img src="{{ asset('imgs/Vis Mobile.png') }}" class="img-fluid rounded-start" alt="...">
+                                    <div class="col-sm-2 d-flex align-items-center">
+                                        <img src="{{ asset('imgs/Vis Mobile.png') }}" class="img-fluid">
                                     </div>
-                                    <div class="col-md-auto bg-success" style="width:1em"></div>
-                                    <div class="col-md-8">
+                                    <div class="col-sm-auto bg-success" style="width:0.5em"></div>
+                                    <div class="col">
                                         <div class="card-header">
                                             <h5 class="card-title  text-center">Vis Mobile</h5>
                                         </div>
                                     <div class="card-body">
-                                            <p class="card-text">
-                                                <strong>Vis Mobile:</strong> <span id="preview-vis-mobile"></span><br>
-                                                <strong>Sortie Orientable:</strong> <span id="preview-sortie-orientable"></span><br>
-                                                <strong>Bac :</strong> <span id="preview-bac"></span><br>
-                                            </p>
-                                        </div>
+                                        <table class="table table-sm">
+                                            <tbody class="small">
+                                                <tr class="table">
+                                                    <td><strong>Vis Mobile:</strong></td>
+                                                    <td><span id="preview-vis-mobile"></span></td>
+                                                </tr>
+                                                <tr class="table">
+                                                    <td><strong>Sortie Orientable:</strong></td>
+                                                    <td><span id="preview-sortie-orientable"></span></td>
+                                                </tr>
+                                                <tr class="table">
+                                                    <td><strong>Bac :</strong></td>
+                                                    <td><span id="preview-bac"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        </div>   
-
-                    </div>
+                        </div>
+                    </div>   
+                </div>
 
                     

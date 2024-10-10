@@ -27,32 +27,85 @@
                                 <h1 class="fs-4 card-title fw-bold mb-4">Demande Commerciale - Stockage</h1>
                                 {% endif %}
                                 
-                                <div class="mb-3">
-                                    {{ form_label(demandeCommercialeForm.date, 'Date', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
-                                    {{ form_widget(demandeCommercialeForm.date, {'attr': {'class': 'form-control', 'required': '', 'autofocus': ''}}) }}
-                                    {{ form_errors(demandeCommercialeForm.date) }}
-                                </div>
+                               <table class="table table-hover table-custom-hover align-middle">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {{ form_label(demandeCommercialeForm.date, 'Date', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                            </td>
+                                            <td>
+                                                {{ form_widget(demandeCommercialeForm.date, {'attr': {'class': 'form-control', 'required': '', 'autofocus': ''}}) }}
+                                                {{ form_errors(demandeCommercialeForm.date) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form_label(demandeCommercialeForm.delais, 'Délais', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                            </td>
+                                            <td>
+                                                {{ form_widget(demandeCommercialeForm.delais, {'attr': {'class': 'form-control', 'required': ''}}) }}
+                                                {{ form_errors(demandeCommercialeForm.delais) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form_label(demandeCommercialeForm.etat_demande, 'Etat de la demande', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                            </td>
+                                            <td>
+                                                {{ form_widget(demandeCommercialeForm.etat_demande, {'attr': {'class': 'form-control', 'required': ''}}) }}
+                                                {{ form_errors(demandeCommercialeForm.etat_demande) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form_label(demandeCommercialeForm.generale, 'Générale', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                            </td>
+                                            <td>
+                                                {{ form_widget(demandeCommercialeForm.generale, {'attr': {'class': 'form-control', 'required': ''}}) }}
+                                                {{ form_errors(demandeCommercialeForm.generale) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form_label(demandeCommercialeForm.infos, 'Infos', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                            </td>
+                                            <td>
+                                                {{ form_widget(demandeCommercialeForm.infos, {'attr': {'class': 'form-control', 'required': ''}}) }}
+                                                {{ form_errors(demandeCommercialeForm.infos) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form_label(demandeCommercialeForm.commentaire, 'Commentaire', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                            </td>
+                                            <td>
+                                                {{ form_widget(demandeCommercialeForm.commentaire, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(demandeCommercialeForm.commentaire) }}
+                                            </td>
+                                        </tr>
+                                                                                <tr>
+                                            <td>
+                                                {{ form_label(demandeCommercialeForm.file, 'Fichiers', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+                                            </td>
+                                            <td>
+                                                {{ form_widget(demandeCommercialeForm.file, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(demandeCommercialeForm.file) }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                                <div class="mb-3">
-                                    {{ form_label(demandeCommercialeForm.TYPE_DEMANDE, 'Type Demande', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
-                                    {{ form_widget(demandeCommercialeForm.TYPE_DEMANDE, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_errors(demandeCommercialeForm.TYPE_DEMANDE) }}
-                                </div>
+                                {{ form_label(demandeCommercialeForm.TYPE_DEMANDE, 'Type Demande', {'label_attr': {'class': 'mb-2 text-muted hidden'}}) }}
+                                {{ form_widget(demandeCommercialeForm.TYPE_DEMANDE, {'attr': {'class': 'form-control hidden'}}) }}
+                                {{ form_errors(demandeCommercialeForm.TYPE_DEMANDE) }}
 
-                                <div class="mb-3">
-                                    {{ form_label(demandeCommercialeForm.commentaire, 'Commentaire', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
-                                    {{ form_widget(demandeCommercialeForm.commentaire, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_errors(demandeCommercialeForm.commentaire) }}
-                                </div>
-
-                                
                                 {% if type_demande == 'secheuse' %}
-                                    {# MODAL CLIENT #}
-                                    <div class="modal fade" id="ModalClient" tabindex="-1" aria-labelledby="ModalClient" aria-hidden="true" >
-                                        <div class="modal-dialog">
+                                   <!-- MODAL CLIENT -->
+                                <div class="modal fade" id="ModalClient" tabindex="-1" aria-labelledby="ModalClient" aria-hidden="true">
+                                    <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header bg-custom">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Informations Client</h1>
+                                                <h1 class="modal-title fs-5" id="ModalClientLabel">Informations Client</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-header">
@@ -61,15 +114,21 @@
                                             <div class="modal-body">
                                                 {{ include('demande_commerciale/Client/client.html.twig') }}
                                             </div>
-                                        </div>
+                                            <div class="modal-body bg-custom">
+                                                <h1 class="modal-title fs-5" id="ModalClientLabel">Site d'installation</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                {{ include('demande_commerciale/Client/site-client.html.twig') }}
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
 
                                     {# MODAL SECHEUSE #}
                                     <div class="modal fade" id="ModalSecheuse" tabindex="-1" aria-labelledby="ModalSecheuse" aria-hidden="true" data-controller="tooltip">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
-                                                <div class="modal-header">
+                                                <div class="modal-header bg-custom">
                                                 <h1 class="modal-title fs-5">Informations Sécheuse</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
@@ -84,7 +143,7 @@
                                     <div class="modal fade" id="ModalOptions" tabindex="-1" aria-labelledby="ModalOptions" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                        <div class="modal-header">
+                                        <div class="modal-header bg-custom">
                                         <h1 class="modal-title fs-5">Options</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
@@ -99,7 +158,7 @@
                                     <div class="modal fade" id="ModalVisMobile" tabindex="-1" aria-labelledby="ModalVisMobiles" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                        <div class="modal-header">
+                                        <div class="modal-header bg-custom">
                                         <h1 class="modal-title fs-5">Vis Mobile</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
@@ -133,7 +192,7 @@
                                 {% endif %}
                             </div>
                             <div class="align-items-center d-flex">
-                                <button id="check-form-submit" type="submit" class="btn btn-primary ms-auto" data-controller="check-form">Submit</button>
+                                <button id="check-form-submit" type="submit" class="btn btn-primary ms-auto m-4" data-controller="check-form">Submit</button>
                             </div>
 
                             <span id="alert_check_form_submit"></span>
@@ -144,10 +203,8 @@
                 {{ form_end(demandeCommercialeForm) }}
             </div>
 
-            <div class="col-lg col-12">
-                <div class="row justify-content-sm-center h-100 mt-4 m-2">
+            <div class="col-lg col-12 mt-4">
                     {{ include('demande_commerciale/preview/preview.html.twig') }}
-                </div>
             </div>
 
         </div>

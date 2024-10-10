@@ -20,6 +20,18 @@ class DemandeCommerciale
     #[ORM\Column(length: 255)]
     private ?string $typeDemande = null;
 
+    /* #[ORM\Column(length: 255)]
+     private ?string $delais = null;
+
+     #[ORM\Column(length: 255)]
+     private ?string $etatDemande = null;
+
+     #[ORM\Column(length: 255)]
+     private ?string $generale = null;
+
+     #[ORM\Column(type: Types::TEXT, nullable: true)]
+     private ?string $infos = null;
+*/
     #[ORM\ManyToOne(inversedBy: 'demandeCommerciales')]
     private ?Stockage $stockage = null;
 
@@ -153,4 +165,53 @@ class DemandeCommerciale
 
         return $this;
     }
+    /*
+        public function getDelais(): ?string
+        {
+            return $this->delais;
+        }
+
+        public function setDelais(string $delais): static
+        {
+            $this->delais = $delais;
+
+            return $this;
+        }
+
+        public function getEtatDemande(): ?string
+        {
+            return $this->etatDemande;
+        }
+
+        public function setEtatDemande(string $etatDemande): static
+        {
+            $this->etatDemande = $etatDemande;
+
+            return $this;
+        }
+
+        public function getGenerale(): ?string
+        {
+            return $this->generale;
+        }
+
+        public function setGenerale(string $generale): static
+        {
+            $this->generale = $generale;
+
+            return $this;
+        }
+
+        public function getInfos(): ?string
+        {
+            return $this->infos;
+        }
+
+        public function setInfos(?string $infos): static
+        {
+            $this->infos = $infos;
+
+            return $this;
+        }
+    */
 }

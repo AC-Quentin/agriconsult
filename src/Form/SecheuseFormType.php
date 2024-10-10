@@ -6,7 +6,6 @@ use App\Entity\Secheuse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -77,6 +76,15 @@ class SecheuseFormType extends AbstractType
             '100' => '100T/h',
         ];
 
+        $collection_vis_mobile = [
+            'WRX841' => 'WRX841',
+            'WRX851' => 'WRX851',
+            'WRX871' => 'WRX871',
+            'SA1060' => 'SA1060',
+            'SA1070' => 'SA1070',
+            'SA1080' => 'SA1080',
+        ];
+
         $builder
             ->add('TYPE_SECHEUSE', ChoiceType::class, [
                 'choices' => $collection_type_secheuse,
@@ -141,9 +149,24 @@ class SecheuseFormType extends AbstractType
                 'expanded' => false,
                 'placeholder' => 'Choisissez une option',
             ])
-            ->add('VIS_MOBILE', TextType::class, [
-                'label' => 'Vis Mobile',
-                'required' => false,
+            ->add('VIS_MOBILE', ChoiceType::class, [
+                'choices' => $collection_vis_mobile,
+                'multiple' => false,
+                'expanded' => true,
+            ])
+            ->add('SORTIE_ORIENTABLE', ChoiceType::class, [
+                'choices' => $collection_oui_non,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Choisissez une option',
+                'mapped' => false,
+            ])
+            ->add('BAC', ChoiceType::class, [
+                'choices' => $collection_oui_non,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Choisissez une option',
+                'mapped' => false,
             ]);
     }
 

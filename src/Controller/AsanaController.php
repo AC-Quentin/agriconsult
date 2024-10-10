@@ -77,8 +77,8 @@ class AsanaController extends AbstractController
         return $this->redirectToRoute('app_home_page'); // Redirige vers la page d'accueil
     }
 
-    #[Route('/asana/getProjects', name: 'app_asana_getprojects')]
-    public function getAsanaProjects(): Response
+    #[Route('/asana/create-task', name: 'app_asana_create_task')]
+    public function createAsanaTask(Request $request): Response
     {
         // Vérifier si l'utilisateur est authentifié
         if (!$this->getUser()) {
@@ -86,7 +86,7 @@ class AsanaController extends AbstractController
         }
 
         // Récupérer l'utilisateur connecté
-        /** @var User $user */
+        /** @var User $user * */
         $user = $this->getUser();
 
         // Vérifier si le token est expiré
@@ -105,128 +105,47 @@ class AsanaController extends AbstractController
 
         $accessToken = $user->getAsanaAccessToken();
 
+        // Créer une tâche
+        // Récupérer les données du formulaire (par exemple, depuis une requête POST)
+        $taskData = [
+            'data' => [
+                'name' => 'ASANA TEST',
+                'completed' => false,
+                'projects' => ['1179330375474433'], // Emmanuel  =>  1190066889395939
+                'workspace' => '1179330431218862',
+            ],
+        ];
+
         try {
             $response = $this->httpClient->request(
-                'GET',
-                'https://app.asana.com/api/1.0/projects',
+                'POST',
+                'https://app.asana.com/api/1.0/tasks',
                 [
                     'headers' => [
                         'Accept' => 'application/json',
                         'Authorization' => sprintf('Bearer %s', $accessToken),
+                        'Content-Type' => 'application/json',
                     ],
+                    'json' => $taskData,
                 ]
             );
 
             // Vérifier le contenu de la réponse
             $data = $response->toArray();
 
-            // Vérifiez si les projets sont dans le tableau
+            // Traitement supplémentaire en fonction de la réponse
             if (isset($data['data'])) {
-                $projects = $data['data']; // Assurez-vous que la clé 'data' est celle qui contient les projets
+                // Tâche créée avec succès
+                $taskId = $data['data']['id'];
+
+                // Rediriger ou afficher un message de succès
+                return $this->redirectToRoute('app_home_page', ['success' => 'Tâche créée avec succès!']);
             } else {
-                // Gérer le cas où il n'y a pas de projets
-                $projects = [];
+                return $this->redirectToRoute('app_home_page', ['error' => 'Échec de la création de la tâche.']);
             }
         } catch (\Exception $e) {
             // Log ou afficher l'erreur pour le débogage
-            dump($e->getMessage());
-
-            return $this->redirectToRoute('app_home_page', ['error' => 'Error fetching projects.']);
+            return $this->redirectToRoute('app_home_page', ['error' => 'Erreur lors de la création de la tâche. '.$e->getMessage()]);
         }
-
-        return $this->render('asana/projects.html.twig', [
-            'projects' => $projects,
-        ]);
     }
-
-    /*#[Route('/asana/getUser', name: 'app_asana_getuser')]
-    public function getAsanaUser(): Response
-    {
-        // Récupérer l'utilisateur connecté
-        /** @var User $user
-        $user = $this->getUser();
-
-        // Récupérer le token d'accès
-        $accessToken = $user->getAsanaAccessToken();
-
-        // Vérifier si l'utilisateur a déjà un gid Asana
-        if (null === $user->getAsanaGid()) {
-            try {
-                // Requête pour obtenir la liste des utilisateurs dans Asana
-                $response = $this->httpClient->request(
-                    'GET',
-                    'https://app.asana.com/api/1.0/users',
-                    [
-                        'headers' => [
-                            'Accept' => 'application/json',
-                            'Authorization' => sprintf('Bearer %s', $accessToken),
-                        ],
-                    ]
-                );
-
-                // Convertir la réponse en tableau
-                $data = $response->toArray();
-
-                // Vérifier si les utilisateurs sont présents dans la réponse
-                if (isset($data['data'])) {
-                    $usergid = null; // Variable pour stocker le gid de l'utilisateur trouvé
-
-                    // Parcourir chaque utilisateur renvoyé par Asana
-                    foreach ($data['data'] as $asanaUser) {
-                        // Extraire le gid de chaque utilisateur
-                        $gid = $asanaUser['gid'];
-
-                        // Faire une nouvelle requête pour obtenir les détails de chaque utilisateur
-                        $userDetailsResponse = $this->httpClient->request(
-                            'GET',
-                            'https://app.asana.com/api/1.0/users/'.$gid,
-                            [
-                                'headers' => [
-                                    'Accept' => 'application/json',
-                                    'Authorization' => sprintf('Bearer %s', $accessToken),
-                                ],
-                            ]
-                        );
-
-                        // Convertir la réponse en tableau
-                        $userDetails = $userDetailsResponse->toArray();
-
-                        // Vérifier si l'email correspond à celui de l'utilisateur connecté
-                        if (isset($userDetails['data']['email']) && $userDetails['data']['email'] === $user->getEmail()) {
-                            $usergid = $gid; // Stocker le gid de l'utilisateur correspondant
-                            $user->setAsanaGid($gid); // Mettre à jour le gid de l'utilisateur dans la base de données
-                            $this->em->persist($user); // Sauvegarder dans la base de données
-                            $this->em->flush();
-                            break; // Sortir de la boucle une fois l'utilisateur trouvé
-                        }
-                    }
-
-                    // Si aucun utilisateur correspondant n'a été trouvé
-                    if (!$usergid) {
-                        // Gérer le cas où l'utilisateur n'a pas été trouvé
-                        $this->addFlash('error', 'Utilisateur non trouvé dans Asana.');
-
-                        return $this->redirectToRoute('app_home_page');
-                    }
-                } else {
-                    // Gérer le cas où il n'y a pas d'utilisateurs dans la réponse
-                    $this->addFlash('error', 'Aucun utilisateur trouvé dans Asana.');
-
-                    return $this->redirectToRoute('app_home_page');
-                }
-            } catch (\Exception $e) {
-                // Log ou afficher l'erreur pour le débogage
-                dump($e->getMessage());
-
-                return $this->redirectToRoute('app_home_page', ['error' => 'Erreur lors de la récupération des utilisateurs.']);
-            }
-        } else {
-            $usergid = $user->getAsanaGid(); // Si l'utilisateur a déjà un gid
-        }
-
-        // Si l'utilisateur Asana correspondant a été trouvé ou s'il a déjà un gid
-        return $this->render('asana/user.html.twig', [
-            'usergid' => $usergid, // Passer le gid de l'utilisateur à la vue
-        ]);
-    }*/
 }

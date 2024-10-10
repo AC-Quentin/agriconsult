@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-12 mb-3">
+        {{ form_label(demandeCommercialeForm.client.adresse_site, 'Adresse Site', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+        {{ form_widget(demandeCommercialeForm.client.adresse_site, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(demandeCommercialeForm.client.adresse_site) }}
+    </div>
+
+    <div class="col-md-6 mb-3">
+        {{ form_label(demandeCommercialeForm.client.code_postal_site, 'Code Postal Site', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+        {{ form_widget(demandeCommercialeForm.client.code_postal_site, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(demandeCommercialeForm.client.code_postal_site) }}
+    </div>
+
+    <div class="col-md-6 mb-3">
+        {{ form_label(demandeCommercialeForm.client.ville_site, 'Ville Site', {'label_attr': {'class': 'mb-2 text-muted'}}) }}
+        {{ form_widget(demandeCommercialeForm.client.ville_site, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(demandeCommercialeForm.client.ville_site) }}
+    </div>
+</div>
